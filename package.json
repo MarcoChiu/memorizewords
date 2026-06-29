@@ -1,0 +1,10 @@
+{
+  "name": "engflow",
+  "version": "1.0.0",
+  "description": "Daily English learning and quiz system",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}
