@@ -190,7 +190,7 @@ body.light-mode .circle {
 }
 
 .logo-subtitle {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-secondary);
   -webkit-text-fill-color: initial;
@@ -222,7 +222,7 @@ body.light-mode .circle {
   padding: 12px 20px;
   border-radius: var(--radius-md);
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 500;
   cursor: pointer;
   display: flex;
@@ -314,13 +314,13 @@ body.light-mode .circle {
 .stat-num {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 28px;
+  font-size: 32px;
   color: var(--primary);
   line-height: 1.2;
 }
 
 .stat-label {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-secondary);
   margin-top: 4px;
 }
@@ -355,7 +355,7 @@ body.light-mode .circle {
   border-radius: var(--radius-sm);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   outline: none;
   transition: all var(--transition-fast);
 }
@@ -383,7 +383,7 @@ body.light-mode .search-box input {
   padding: 10px 14px;
   border-radius: var(--radius-sm);
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   cursor: pointer;
   flex-grow: 1;
@@ -403,7 +403,7 @@ body.light-mode .search-box input {
 .btn {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   padding: 10px 20px;
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
@@ -418,13 +418,13 @@ body.light-mode .search-box input {
 
 .btn-sm {
   padding: 8px 12px;
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 6px;
 }
 
 .btn-lg {
   padding: 14px 28px;
-  font-size: 16px;
+  font-size: 18px;
   border-radius: var(--radius-md);
 }
 
@@ -573,7 +573,7 @@ body.light-mode .search-box input {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  font-size: 11px;
+  font-size: 13px;
   padding: 2px 8px;
   border-radius: 12px;
 }
@@ -614,7 +614,7 @@ body.light-mode .tag-badge {
 .vocab-card-english {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 20px;
+  font-size: 24px;
   color: var(--text);
   word-break: break-word;
   line-height: 1.3;
@@ -642,7 +642,7 @@ body.light-mode .tag-badge {
 }
 
 .vocab-card-chinese {
-  font-size: 15px;
+  font-size: 18px;
   color: var(--text-secondary);
   border-left: 2px solid var(--border);
   padding-left: 10px;
@@ -661,7 +661,7 @@ body.light-mode .tag-badge {
 }
 
 .vocab-card-notes {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   margin-top: 4px;
   font-style: italic;
@@ -674,7 +674,7 @@ body.light-mode .tag-badge {
   margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid var(--border);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .vocab-stats {
@@ -728,13 +728,13 @@ body.light-mode .tag-badge {
 }
 
 .empty-state h3 {
-  font-size: 20px;
+  font-size: 24px;
   color: var(--text);
 }
 
 .empty-state p {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
   max-width: 320px;
   margin-bottom: 8px;
 }
@@ -771,7 +771,7 @@ body.light-mode .tag-badge {
   gap: 12px;
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 15px;
+  font-size: 17px;
   text-align: left;
   transition: all var(--transition-fast);
 }
@@ -808,7 +808,7 @@ body.light-mode .file-btn {
   text-align: center;
   color: var(--text-muted);
   padding: 24px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .translation-loader {
@@ -829,7 +829,7 @@ body.light-mode .file-btn {
 }
 
 .loader-text {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--text-secondary);
 }
@@ -855,7 +855,7 @@ body.light-mode .file-btn {
 
 .card-header h2 {
   font-family: var(--font-display);
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -864,7 +864,7 @@ body.light-mode .file-btn {
 }
 
 .card-header p {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-secondary);
   margin-top: 4px;
 }
@@ -890,13 +890,13 @@ body.light-mode .file-btn {
 
 .quiz-header h2 {
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
 }
 
 .quiz-header p {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .quiz-setup-grid {
@@ -921,7 +921,7 @@ body.light-mode .file-btn {
   gap: 8px;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 15px;
+  font-size: 18px;
   color: var(--text);
   margin-bottom: 12px;
 }
@@ -971,13 +971,13 @@ body.light-mode .mode-icon {
 .mode-title {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 15px;
+  font-size: 18px;
   color: var(--text);
   display: block;
 }
 
 .mode-desc {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-secondary);
   display: block;
   margin-top: 2px;
@@ -1049,7 +1049,7 @@ body.light-mode .toggle-switch .slider {
 }
 
 .toggle-label {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-secondary);
 }
 
@@ -1076,7 +1076,7 @@ body.light-mode .toggle-switch .slider {
 }
 
 .quiz-progress-text {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-secondary);
 }
@@ -1110,7 +1110,7 @@ body.light-mode .progress-bar-bg {
   border-radius: 20px;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .quiz-score-badge i.fa-check {
@@ -1204,7 +1204,7 @@ body.light-mode .progress-bar-bg {
 }
 
 .chinese-text {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 500;
   color: var(--text-secondary);
 }
@@ -1222,7 +1222,7 @@ body.light-mode .progress-bar-bg {
   border-radius: var(--radius-sm);
   color: var(--text);
   padding: 14px 18px;
-  font-size: 18px;
+  font-size: 22px;
   font-family: var(--font-display);
   text-align: center;
   outline: none;
@@ -1310,12 +1310,12 @@ body.light-mode .flashcard-back {
 .flash-eng {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 32px;
+  font-size: 38px;
   line-height: 1.2;
 }
 
 .flash-chi {
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text);
 }
@@ -1417,7 +1417,7 @@ body.light-mode .flashcard-back {
 }
 
 .choice-title {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 500;
   text-align: center;
 }
@@ -1442,7 +1442,7 @@ body.light-mode .flashcard-back {
   padding: 16px 20px;
   border-radius: var(--radius-sm);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 500;
   cursor: pointer;
   text-align: left;
@@ -1518,11 +1518,11 @@ body.light-mode .flashcard-back {
 
 .feedback-text-box h4 {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 18px;
 }
 
 .feedback-text-box p {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-secondary);
   margin-top: 2px;
 }
@@ -1571,13 +1571,13 @@ body.light-mode .flashcard-back {
 
 .result-number {
   font-family: var(--font-display);
-  font-size: 36px;
+  font-size: 42px;
   font-weight: 700;
   color: var(--primary);
 }
 
 .result-label {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-secondary);
   margin-top: 4px;
 }
@@ -1589,13 +1589,13 @@ body.light-mode .flashcard-back {
 
 .results-details h3 {
   font-family: var(--font-display);
-  font-size: 16px;
+  font-size: 22px;
   color: var(--text);
   margin-bottom: 12px;
 }
 
 .results-list-container {
-  max-height: 300px;
+  max-height: 480px;
   overflow-y: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -1604,12 +1604,12 @@ body.light-mode .flashcard-back {
 .results-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 20px;
 }
 
 .results-table th,
 .results-table td {
-  padding: 12px 16px;
+  padding: 16px 20px;
   text-align: left;
   border-bottom: 1px solid var(--border);
 }
@@ -1827,7 +1827,7 @@ body.light-mode .test-input-group input {
   
   .nav-tab {
     padding: 10px 14px;
-    font-size: 14px;
+    font-size: 16px;
     border-radius: var(--radius-sm);
   }
 
@@ -1866,7 +1866,7 @@ body.light-mode .test-input-group input {
 
   .file-btn {
     padding: 10px 14px;
-    font-size: 13px;
+    font-size: 15px;
     white-space: nowrap;
     transform: none !important; /* Disable hover translation effect on mobile touch screens */
   }
@@ -1886,7 +1886,7 @@ body.light-mode .test-input-group input {
   }
   
   .vocab-card-english {
-    font-size: 18px;
+    font-size: 22px;
   }
 
   /* Quiz Setup grid */
@@ -1907,11 +1907,11 @@ body.light-mode .test-input-group input {
   .btn-voice-large {
     width: 68px;
     height: 68px;
-    font-size: 26px;
+    font-size: 30px;
   }
   
   .chinese-text {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   .input-answer-section {
@@ -1921,7 +1921,7 @@ body.light-mode .test-input-group input {
 
   .input-answer-section input {
     width: 100%;
-    font-size: 16px; /* Prevents Safari auto-zoom on input focus */
+    font-size: 20px; /* Prevents Safari auto-zoom on input focus */
     padding: 12px;
   }
   
@@ -1935,11 +1935,11 @@ body.light-mode .test-input-group input {
   }
   
   .flash-eng {
-    font-size: 26px;
+    font-size: 32px;
   }
   
   .flash-chi {
-    font-size: 22px;
+    font-size: 28px;
   }
 
   .action-buttons {
@@ -1958,13 +1958,13 @@ body.light-mode .test-input-group input {
   }
   
   .result-number {
-    font-size: 28px;
+    font-size: 34px;
   }
 
   .results-table th,
   .results-table td {
-    padding: 8px 10px;
-    font-size: 13px;
+    padding: 12px 14px;
+    font-size: 17px;
   }
   
   .results-actions {

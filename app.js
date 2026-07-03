@@ -29,7 +29,8 @@ const STATE = {
     wrongsOnly: [],
     isAnswered: false,
     autoPlay: true
-  }
+  },
+  currentSpeechSequenceId: 0
 };
 
 // Core Speech Engine Voices Cache
@@ -192,9 +193,12 @@ function speak(text, callback) {
 
   if (!text) return;
 
-  // A tiny timeout prevents Chrome from dropping the speak command after cancel()
-  setTimeout(() => {
-    const utterance = new SpeechSynthesisUtterance(text);
+  // Set sequence ID to manage cancellation of slow pronunciation
+  const seqId = ++STATE.currentSpeechSequenceId;
+
+  // Helper to construct individual utterances
+  function createUtterance(speechText, speed, onSpeechEnd, onSpeechError) {
+    const utterance = new SpeechSynthesisUtterance(speechText);
     utterance.lang = 'en-US'; // Force English voice engine
 
     // Set voice
@@ -204,35 +208,66 @@ function speak(text, callback) {
     }
     if (voice) {
       utterance.voice = voice;
-      console.log(`[TTS] Speaking using voice: ${voice.name} (${voice.lang})`);
-    } else {
-      console.log(`[TTS] Speaking using browser default voice`);
     }
 
-    // Set parameters
-    utterance.rate = STATE.settings.rate;
+    utterance.rate = speed;
     utterance.pitch = STATE.settings.pitch;
+    utterance.onend = onSpeechEnd;
+    utterance.onerror = onSpeechError;
 
-    utterance.onend = () => {
-      console.log(`[TTS] Speech finished: "${text}"`);
-      if (callback) callback();
-    };
+    return utterance;
+  }
 
-    utterance.onerror = (event) => {
-      console.error('[TTS] Speech error:', event.error, event);
-      let errorMsg = event.error;
-      if (errorMsg === 'not-allowed') {
-        errorMsg = '瀏覽器阻擋播放 (請先在頁面任一處點選以允許音效)';
-      } else if (errorMsg === 'audio-busy') {
-        errorMsg = '音訊裝置忙碌中';
-      } else if (errorMsg === 'network') {
-        errorMsg = '網路連線異常 (部分網路語音載入失敗)';
+  // A tiny timeout prevents Chrome from dropping the speak command after cancel()
+  setTimeout(() => {
+    // Check if we've been interrupted
+    if (STATE.currentSpeechSequenceId !== seqId) return;
+
+    const firstRate = STATE.settings.rate;
+    const utterance1 = createUtterance(
+      text,
+      firstRate,
+      () => {
+        console.log(`[TTS] First speech finished: "${text}" at rate ${firstRate}`);
+        
+        // Wait 400ms (or 1400ms during quiz) before starting the second slower speech
+        const delay = (STATE.currentQuiz && STATE.currentQuiz.active) ? 1400 : 400;
+        setTimeout(() => {
+          if (STATE.currentSpeechSequenceId !== seqId) return;
+
+          const secondRate = Math.max(0.1, STATE.settings.rate - 0.25);
+          const utterance2 = createUtterance(
+            text,
+            secondRate,
+            () => {
+              console.log(`[TTS] Second speech finished: "${text}" at rate ${secondRate}`);
+              if (callback) callback();
+            },
+            (event) => {
+              console.error('[TTS] Second speech error:', event.error, event);
+              if (callback) callback();
+            }
+          );
+          
+          synth.speak(utterance2);
+        }, delay);
+      },
+      (event) => {
+        console.error('[TTS] First speech error:', event.error, event);
+        let errorMsg = event.error;
+        if (errorMsg === 'not-allowed') {
+          errorMsg = '瀏覽器阻擋播放 (請先在頁面任一處點選以允許音效)';
+        } else if (errorMsg === 'audio-busy') {
+          errorMsg = '音訊裝置忙碌中';
+        } else if (errorMsg === 'network') {
+          errorMsg = '網路連線異常 (部分網路語音載入失敗)';
+        }
+        showToast(`語音朗讀失敗: ${errorMsg}`);
+        if (callback) callback();
       }
-      showToast(`語音朗讀失敗: ${errorMsg}`);
-      if (callback) callback();
-    };
+    );
 
-    synth.speak(utterance);
+    synth.speak(utterance1);
   }, 50);
 }
 
@@ -861,6 +896,7 @@ async function startQuiz() {
 
 function quitQuiz() {
   if (confirm("考驗尚未完成，確認要退出並結束嗎？")) {
+    STATE.currentQuiz.active = false;
     document.getElementById("quiz-arena").classList.add("hidden");
     document.getElementById("quiz-setup").classList.remove("hidden");
   }
@@ -929,7 +965,7 @@ function submitSpellingAnswer() {
   document.getElementById("btn-spelling-submit").disabled = true;
 
   recordAnswerResult(vocab, userAnswer, isCorrect);
-  showFeedbackBanner(isCorrect, correctAnswer);
+  loadNextQuestion();
 }
 
 // Flashcard Mode
@@ -1011,7 +1047,7 @@ function handleChoiceAnswer(selectedBtn, isCorrect, correctAnswerText) {
   }
 
   recordAnswerResult(vocab, selectedBtn.textContent, isCorrect);
-  showFeedbackBanner(isCorrect, correctAnswerText);
+  loadNextQuestion();
 }
 
 // Record Quiz Results
