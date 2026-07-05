@@ -1990,3 +1990,68 @@ body.light-mode .test-input-group input {
     margin-bottom: 12px;
   }
 }
+
+/* Playlist Player & Repetition Controls Styles */
+.flex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+  width: 100%;
+}
+
+.list-player-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.list-player-controls .toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.vocab-card.active-playing {
+  border-color: var(--primary) !important;
+  background: var(--primary-light) !important;
+  transform: translateY(-4px) scale(1.03) !important;
+  box-shadow: var(--shadow-glow), var(--shadow-md) !important;
+  animation: pulse-border 2s infinite ease-in-out;
+  z-index: 10;
+}
+
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2), var(--shadow-md);
+    border-color: rgba(99, 102, 241, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.7), var(--shadow-md);
+    border-color: rgba(99, 102, 241, 1);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2), var(--shadow-md);
+    border-color: rgba(99, 102, 241, 0.6);
+  }
+}
+
+@media (max-width: 768px) {
+  .flex-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .list-player-controls {
+    width: 100%;
+    justify-content: flex-start;
+    border-top: 1px dashed var(--border);
+    padding-top: 12px;
+  }
+}

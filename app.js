@@ -15,7 +15,8 @@ const STATE = {
     voiceURI: '',
     rate: DEFAULTS.rate,
     pitch: DEFAULTS.pitch,
-    theme: DEFAULTS.theme
+    theme: DEFAULTS.theme,
+    speechMode: 'twice' // 'twice' or 'once'
   },
   currentQuiz: {
     active: false,
@@ -31,6 +32,14 @@ const STATE = {
     autoPlay: true
   },
   currentSpeechSequenceId: 0
+};
+
+// List Autoplay Player State
+const PLAYER_STATE = {
+  active: false,
+  currentIndex: 0,
+  timeoutId: null,
+  hideChinese: false
 };
 
 // Core Speech Engine Voices Cache
@@ -52,6 +61,10 @@ function loadSettings() {
   const localSettings = localStorage.getItem("engflow_settings_v2");
   if (localSettings) {
     STATE.settings = { ...STATE.settings, ...JSON.parse(localSettings) };
+  }
+  // Ensure default for speechMode if not present
+  if (!STATE.settings.speechMode) {
+    STATE.settings.speechMode = 'twice';
   }
 }
 
@@ -126,6 +139,9 @@ function switchTab(panelId) {
     }
   });
 
+  // Stop list player on tab switch to prevent speech overlap
+  stopListPlayer();
+
   // Action hook on tab transition
   if (panelId === 'settings-tab') {
     loadSettingsPanelValues();
@@ -181,11 +197,16 @@ function populateVoiceSelect() {
   });
 }
 
-function speak(text, callback) {
+function speak(text, callback, isAutoplay = false) {
   const synth = window.speechSynthesis;
   if (!synth) {
     showToast("您的瀏覽器不支援語音合成！");
     return;
+  }
+
+  // If this speech is triggered manually (not via list player) and list player is running, stop list player
+  if (!isAutoplay && PLAYER_STATE.active) {
+    stopListPlayer();
   }
 
   // Cancel current speech before playing next
@@ -230,8 +251,15 @@ function speak(text, callback) {
       () => {
         console.log(`[TTS] First speech finished: "${text}" at rate ${firstRate}`);
         
-        // Wait 400ms (or 1400ms during quiz) before starting the second slower speech
-        const delay = (STATE.currentQuiz && STATE.currentQuiz.active) ? 1400 : 400;
+        // Check if speech mode is set to once
+        const mode = STATE.settings.speechMode || 'twice';
+        if (mode === 'once') {
+          if (callback) callback();
+          return;
+        }
+
+        // Wait 1500ms (so they can repeat) before starting the second slower speech
+        const delay = (STATE.currentQuiz && STATE.currentQuiz.active) ? 1400 : 1500;
         setTimeout(() => {
           if (STATE.currentSpeechSequenceId !== seqId) return;
 
@@ -278,6 +306,18 @@ function loadSettingsPanelValues() {
   document.getElementById("rate-value").textContent = `${STATE.settings.rate}x`;
   document.getElementById("settings-pitch").value = STATE.settings.pitch;
   document.getElementById("pitch-value").textContent = STATE.settings.pitch;
+
+  // Sync speech mode dropdown
+  const speechModeSelect = document.getElementById("settings-speech-mode");
+  if (speechModeSelect) {
+    speechModeSelect.value = STATE.settings.speechMode || 'twice';
+  }
+
+  // Sync quiz setup checkbox
+  const quizReadTwiceCheckbox = document.getElementById("quiz-read-twice");
+  if (quizReadTwiceCheckbox) {
+    quizReadTwiceCheckbox.checked = (STATE.settings.speechMode !== 'once');
+  }
 }
 
 // Save Settings from UI
@@ -285,12 +325,22 @@ function saveSettings() {
   const voiceURI = document.getElementById("settings-voice").value;
   const rate = parseFloat(document.getElementById("settings-rate").value);
   const pitch = parseFloat(document.getElementById("settings-pitch").value);
+  const speechModeSelect = document.getElementById("settings-speech-mode");
+  const speechMode = speechModeSelect ? speechModeSelect.value : 'twice';
 
   STATE.settings.voiceURI = voiceURI;
   STATE.settings.rate = rate;
   STATE.settings.pitch = pitch;
+  STATE.settings.speechMode = speechMode;
 
   saveSettingsToLocalStorage();
+
+  // Sync quiz setup checkbox
+  const quizReadTwiceCheckbox = document.getElementById("quiz-read-twice");
+  if (quizReadTwiceCheckbox) {
+    quizReadTwiceCheckbox.checked = (speechMode !== 'once');
+  }
+
   showToast("設定已儲存");
 }
 
@@ -298,6 +348,7 @@ function resetSettings() {
   STATE.settings.voiceURI = availableVoices.length > 0 ? availableVoices[0].voiceURI : '';
   STATE.settings.rate = DEFAULTS.rate;
   STATE.settings.pitch = DEFAULTS.pitch;
+  STATE.settings.speechMode = 'twice';
 
   loadSettingsPanelValues();
   saveSettingsToLocalStorage();
@@ -333,6 +384,44 @@ function setupEventListeners() {
     document.getElementById("quiz-results").classList.add("hidden");
     document.getElementById("quiz-setup").classList.remove("hidden");
   });
+
+  // Quiz read twice options
+  const quizReadTwiceCheckbox = document.getElementById("quiz-read-twice");
+  if (quizReadTwiceCheckbox) {
+    quizReadTwiceCheckbox.addEventListener("change", (e) => {
+      STATE.settings.speechMode = e.target.checked ? 'twice' : 'once';
+      saveSettingsToLocalStorage();
+
+      const speechModeSelect = document.getElementById("settings-speech-mode");
+      if (speechModeSelect) {
+        speechModeSelect.value = STATE.settings.speechMode;
+      }
+    });
+  }
+
+  // Playlist Autoplay Controls
+  const btnPlayerPlay = document.getElementById("btn-player-play");
+  if (btnPlayerPlay) {
+    btnPlayerPlay.addEventListener("click", startListPlayer);
+  }
+  const btnPlayerStop = document.getElementById("btn-player-stop");
+  if (btnPlayerStop) {
+    btnPlayerStop.addEventListener("click", stopListPlayer);
+  }
+  const playerHideChinese = document.getElementById("player-hide-chinese");
+  if (playerHideChinese) {
+    playerHideChinese.addEventListener("change", (e) => {
+      PLAYER_STATE.hideChinese = e.target.checked;
+      const chineseParagraphs = document.querySelectorAll(".vocab-card-chinese");
+      chineseParagraphs.forEach(p => {
+        if (PLAYER_STATE.hideChinese) {
+          p.classList.add("blurred");
+        } else {
+          p.classList.remove("blurred");
+        }
+      });
+    });
+  }
 
   // Spelling inputs
   document.getElementById("btn-quiz-speak").addEventListener("click", () => {
@@ -593,6 +682,10 @@ async function loadFile(fileName) {
       document.getElementById("translation-loader").classList.add("hidden");
       document.getElementById("words-empty").classList.remove("hidden");
       document.getElementById("start-quiz-hint").textContent = "此檔案無單字可供抽考。";
+
+      // Hide player controls
+      const playerControls = document.getElementById("list-player-controls");
+      if (playerControls) playerControls.classList.add("hidden");
       return;
     }
 
@@ -610,6 +703,9 @@ async function loadFile(fileName) {
 
     STATE.loadedVocabs = parsedItems;
 
+    // Stop list player if active
+    stopListPlayer();
+
     // Enable Quiz
     document.getElementById("btn-start-quiz").disabled = false;
     document.getElementById("start-quiz-hint").classList.add("hidden");
@@ -618,6 +714,18 @@ async function loadFile(fileName) {
     // Render in UI
     document.getElementById("translation-loader").classList.add("hidden");
     document.getElementById("active-file-desc").textContent = `成功載入 ${parsedItems.length} 個單字。`;
+
+    // Show player controls
+    const playerControls = document.getElementById("list-player-controls");
+    if (playerControls) {
+      playerControls.classList.remove("hidden");
+      const hideChineseCheckbox = document.getElementById("player-hide-chinese");
+      if (hideChineseCheckbox) {
+        hideChineseCheckbox.checked = false;
+        PLAYER_STATE.hideChinese = false;
+      }
+    }
+
     renderLoadedWords();
     showToast(`成功載入 ${fileName}`);
   } catch (error) {
@@ -625,6 +733,12 @@ async function loadFile(fileName) {
     document.getElementById("active-file-desc").textContent = "載入檔案失敗。";
     document.getElementById("translation-loader").classList.add("hidden");
     document.getElementById("start-quiz-hint").textContent = "載入失敗，無法開始考驗。";
+
+    // Hide player controls on error
+    const playerControls = document.getElementById("list-player-controls");
+    if (playerControls) playerControls.classList.add("hidden");
+    stopListPlayer();
+
     showToast("檔案載入失敗！");
   }
 }
@@ -694,7 +808,7 @@ function renderLoadedWords() {
           <i class="fa-solid fa-volume-high"></i>
         </button>
       </div>
-      <p class="vocab-card-chinese">${item.chinese}</p>
+      <p class="vocab-card-chinese ${PLAYER_STATE.hideChinese ? 'blurred' : ''}" onclick="toggleBlur(this)">${item.chinese}</p>
     `;
     container.appendChild(card);
   });
@@ -710,10 +824,20 @@ function toggleBlur(element) {
 
 // Start Quiz logic
 async function startQuiz() {
+  // Stop list player if active
+  stopListPlayer();
+
   const scope = document.getElementById("quiz-scope").value;
   const mode = document.querySelector('input[name="quiz-mode"]:checked').value;
   const countVal = document.getElementById("quiz-count").value;
   const autoPlay = document.getElementById("quiz-auto-play").checked;
+
+  // Sync speech mode with the read twice setting from the quiz screen
+  const quizReadTwiceCheckbox = document.getElementById("quiz-read-twice");
+  if (quizReadTwiceCheckbox) {
+    STATE.settings.speechMode = quizReadTwiceCheckbox.checked ? 'twice' : 'once';
+    saveSettingsToLocalStorage();
+  }
 
   let pool = [];
 
@@ -810,13 +934,13 @@ async function startQuiz() {
       // Format final vocabulary list with unique english values
       const seenEnglish = new Set();
       combinedItems.forEach((item, idx) => {
-        const engKey = item.english.trim().toLowerCase();
+        const engKey = item.english.trim();
         if (seenEnglish.has(engKey)) return;
         seenEnglish.add(engKey);
 
         let finalChinese = item.chinese;
         if (!finalChinese) {
-          finalChinese = translationDictionary[engKey] || "（未能取得翻譯）";
+          finalChinese = translationDictionary[engKey.toLowerCase()] || "（未能取得翻譯）";
         }
 
         pool.push({
@@ -957,7 +1081,7 @@ function submitSpellingAnswer() {
   const correctAnswer = quiz.questions[quiz.currentIndex].english.trim();
   const vocab = quiz.questions[quiz.currentIndex];
 
-  const formatText = text => text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").replace(/\s+/g, " ").trim();
+  const formatText = text => text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").replace(/\s+/g, " ").trim();
   const isCorrect = formatText(userAnswer) === formatText(correctAnswer);
 
   quiz.isAnswered = true;
@@ -1181,4 +1305,74 @@ function retryWrongQuestions() {
   document.getElementById("quiz-score-wrong").textContent = "0";
 
   loadQuestion();
+}
+
+// List Autoplay Player Methods
+function startListPlayer() {
+  if (STATE.loadedVocabs.length === 0) {
+    showToast("目前沒有單字可以朗讀！");
+    return;
+  }
+  
+  PLAYER_STATE.active = true;
+  PLAYER_STATE.currentIndex = 0;
+  
+  document.getElementById("btn-player-play").classList.add("hidden");
+  document.getElementById("btn-player-stop").classList.remove("hidden");
+  
+  playCurrentWordInList();
+}
+
+function stopListPlayer() {
+  PLAYER_STATE.active = false;
+  if (PLAYER_STATE.timeoutId) {
+    clearTimeout(PLAYER_STATE.timeoutId);
+    PLAYER_STATE.timeoutId = null;
+  }
+  
+  // Cancel Speech
+  window.speechSynthesis.cancel();
+  
+  document.getElementById("btn-player-play").classList.remove("hidden");
+  document.getElementById("btn-player-stop").classList.add("hidden");
+  
+  // Clear active card highlights
+  const cards = document.querySelectorAll(".vocab-card");
+  cards.forEach(card => card.classList.remove("active-playing"));
+}
+
+function playCurrentWordInList() {
+  if (!PLAYER_STATE.active) return;
+  
+  const vocabLength = STATE.loadedVocabs.length;
+  if (PLAYER_STATE.currentIndex >= vocabLength) {
+    // Completed playlist
+    showToast("單字朗讀完畢！");
+    stopListPlayer();
+    return;
+  }
+  
+  const cards = document.querySelectorAll(".vocab-card");
+  // Remove playing class from all
+  cards.forEach(card => card.classList.remove("active-playing"));
+  
+  const currentCard = cards[PLAYER_STATE.currentIndex];
+  if (currentCard) {
+    currentCard.classList.add("active-playing");
+    currentCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  
+  const item = STATE.loadedVocabs[PLAYER_STATE.currentIndex];
+  
+  // Speak the current word, passing true for isAutoplay
+  speak(item.english, () => {
+    // Callback is fired when speech completes (after the second reading, or first if mode is once)
+    if (!PLAYER_STATE.active) return;
+    
+    // Wait 1.5s before moving to next word to give user time to digest / repeat
+    PLAYER_STATE.timeoutId = setTimeout(() => {
+      PLAYER_STATE.currentIndex++;
+      playCurrentWordInList();
+    }, 1500);
+  }, true);
 }

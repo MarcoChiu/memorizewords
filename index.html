@@ -81,10 +81,24 @@
 
           <!-- Active File Words & Google Translation Display -->
           <div class="card glass words-display-panel">
-            <div class="card-header">
+            <div class="card-header flex-header">
               <div class="words-header-info">
                 <h2 id="active-file-title">未選擇檔案</h2>
                 <p id="active-file-desc">請從左側點選以載入單字。系統將透過 Google 翻譯自動翻譯。</p>
+              </div>
+              <!-- Autoplay Player Controls -->
+              <div id="list-player-controls" class="list-player-controls hidden">
+                <button id="btn-player-play" class="btn btn-primary btn-sm">
+                  <i class="fa-solid fa-circle-play"></i> 自動朗讀全部 (跟讀)
+                </button>
+                <button id="btn-player-stop" class="btn btn-danger-outline btn-sm hidden">
+                  <i class="fa-solid fa-circle-stop"></i> 停止朗讀
+                </button>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="player-hide-chinese">
+                  <span class="slider"></span>
+                  <span class="toggle-label">遮蔽中文 (點選顯現)</span>
+                </label>
               </div>
             </div>
 
@@ -170,6 +184,14 @@
                   <input type="checkbox" id="quiz-auto-play" checked>
                   <span class="slider"></span>
                   <span class="toggle-label">題目載入時自動朗讀</span>
+                </label>
+              </div>
+
+              <div class="setup-group checkbox-group">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="quiz-read-twice" checked>
+                  <span class="slider"></span>
+                  <span class="toggle-label">考試跟讀模式 (朗讀兩次)</span>
                 </label>
               </div>
 
@@ -359,6 +381,16 @@
                 <option value="">正在載入系統聲音...</option>
               </select>
               <small class="helper-text">系統會自動列出您電腦/手機中安裝的英語語音庫。</small>
+            </div>
+
+            <!-- Speech Repeat Mode Selection -->
+            <div class="form-group">
+              <label for="settings-speech-mode"><i class="fa-solid fa-repeat"></i> 朗讀重讀模式</label>
+              <select id="settings-speech-mode">
+                <option value="twice" selected>朗讀兩次 (第一次原速、第二次慢速，適合考試跟讀)</option>
+                <option value="once">只朗讀一次 (快速流暢)</option>
+              </select>
+              <small class="helper-text">設定在單字列表跟讀或測驗發音時的重複朗讀次數。</small>
             </div>
 
             <!-- Speed (Rate) slider -->
