@@ -1,3 +1,4 @@
+/* global __BUILD_TIME__ */
 import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
@@ -60,6 +61,7 @@ export default function App() {
     const activeTheme = loadedSettings.theme || DEFAULTS.theme;
     setTheme(activeTheme);
     document.body.className = activeTheme === 'light' ? 'light-mode' : 'dark-mode';
+    document.title = `每日英文學習 & 智慧抽考系統 (${typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : 'Dev'} build)`;
 
     // Init TTS Voices
     const synth = window.speechSynthesis;
