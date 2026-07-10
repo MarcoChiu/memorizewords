@@ -76,12 +76,19 @@ export default function QuizTab({
   const generateChoiceOptions = (question) => {
     let options = [question];
     
-    // Distractors pool
-    const distractorsPool = loadedVocabs.filter(v => v.id !== question.id);
+    // Distractors pool from the current quiz questions
+    const distractorsPool = questions.filter(v => v.id !== question.id);
     const shuffledDistractors = shuffleArray(distractorsPool);
     const selectedDistractors = shuffledDistractors.slice(0, 3);
     
     options = [...options, ...selectedDistractors];
+
+    // If still not enough options (e.g. quiz count is small), draw from loadedVocabs as fallback
+    if (options.length < 4) {
+      const loadedPool = loadedVocabs.filter(v => !options.some(opt => opt.id === v.id));
+      const shuffledLoaded = shuffleArray(loadedPool);
+      options = [...options, ...shuffledLoaded.slice(0, 4 - options.length)];
+    }
 
     // If less than 4 options, pad with defaults
     while (options.length < 4) {
@@ -205,6 +212,7 @@ export default function QuizTab({
     const isCorrect = selectedOpt.id === currentQuestion.id;
 
     setIsAnswered(true);
+    setUserAnswer(selectedOpt.english);
     recordResult(currentQuestion, selectedOpt.english, isCorrect);
 
     setFeedback({
