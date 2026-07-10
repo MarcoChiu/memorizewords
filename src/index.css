@@ -76,6 +76,10 @@ body.light-mode {
   --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.15);
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 /* Base Styles */
 * {
   box-sizing: border-box;
@@ -140,13 +144,14 @@ body.light-mode .circle {
 
 /* App Container Layout */
 .app-container {
-  width: 100%;
-  max-width: 1200px;
+  width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 24px 16px;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  flex-shrink: 0;
 }
 
 /* Header */
