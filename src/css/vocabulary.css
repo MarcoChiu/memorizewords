@@ -1,0 +1,212 @@
+/* Vocabulary Grid Container */
+.vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+/* Vocab Card styling */
+.vocab-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    transition: all var(--transition-normal);
+}
+
+.vocab-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.vocab-card.highlight-wrong {
+    border-left: 4px solid var(--danger);
+}
+
+.vocab-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.vocab-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.tag-badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 13px;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+body.light-mode .tag-badge {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.vocab-card-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-star {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 18px;
+    transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-star:hover {
+    transform: scale(1.15);
+}
+
+.btn-star.starred {
+    color: var(--warning);
+}
+
+/* Vocabulary Text Areas */
+.vocab-english-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vocab-card-english {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--text);
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+.btn-speak-vocab {
+    background: var(--primary-light);
+    border: none;
+    color: var(--primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-speak-vocab:hover {
+    background: var(--primary);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.vocab-card-chinese {
+    font-size: 18px;
+    color: var(--text-secondary);
+    border-left: 2px solid var(--border);
+    padding-left: 10px;
+    margin-top: 4px;
+    transition: all var(--transition-fast);
+}
+
+.vocab-card-chinese.blurred {
+    filter: blur(5px);
+    user-select: none;
+    cursor: pointer;
+}
+
+.vocab-card-chinese.blurred:hover {
+    filter: blur(2px);
+}
+
+.vocab-card-notes {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-style: italic;
+}
+
+.vocab-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+}
+
+.vocab-stats {
+    color: var(--text-muted);
+}
+
+.vocab-stats .wrong-count {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.card-options-btn {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-card-action {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    transition: color var(--transition-fast);
+}
+
+.btn-card-action:hover {
+    color: var(--text);
+}
+
+.btn-card-action.btn-delete:hover {
+    color: var(--danger);
+}
+
+/* Empty State Card */
+.empty-state {
+    text-align: center;
+    padding: 60px 40px;
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 500px;
+    margin: 40px auto;
+}
+
+.empty-icon {
+    font-size: 48px;
+    color: var(--text-muted);
+}
+
+.empty-state h3 {
+    font-size: 24px;
+    color: var(--text);
+}
+
+.empty-state p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    max-width: 320px;
+    margin-bottom: 8px;
+}

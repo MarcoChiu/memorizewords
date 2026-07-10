@@ -1,0 +1,462 @@
+/* Quiz Gameplay CSS */
+.quiz-arena-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.quiz-arena-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.quiz-progress-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.quiz-progress-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+body.light-mode .progress-bar-bg {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 4px;
+    transition: width var(--transition-normal);
+}
+
+.quiz-score-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.quiz-score-badge i.fa-check {
+    color: var(--accent);
+}
+
+.quiz-score-badge i.fa-xmark {
+    color: var(--danger);
+}
+
+.quiz-score-badge .divider {
+    color: var(--border);
+}
+
+/* Quiz Play Card styling */
+.quiz-card-wrapper {
+    margin-bottom: 24px;
+    perspective: 1000px;
+}
+
+.quiz-play-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    width: 100%;
+}
+
+/* Spelling mode elements */
+.audio-prompt-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.btn-voice-large {
+    background: var(--primary-light);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: var(--primary);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    font-size: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+}
+
+.btn-voice-large:hover {
+    background: var(--primary);
+    color: #fff;
+    transform: scale(1.08);
+    box-shadow: var(--shadow-glow);
+}
+
+.audio-hint-text {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.chinese-clue {
+    width: 100%;
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.clue-tag {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-app);
+    color: var(--text-muted);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.chinese-text {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.input-answer-section {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.input-answer-section input {
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    padding: 14px 18px;
+    font-size: 22px;
+    font-family: var(--font-display);
+    text-align: center;
+    outline: none;
+    transition: all var(--transition-fast);
+}
+
+body.light-mode .input-answer-section input {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.input-answer-section input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+/* Flashcard 3D CSS */
+.flashcard-3d {
+    width: 100%;
+    height: 280px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform var(--transition-slow);
+    cursor: pointer;
+}
+
+.flashcard-3d.flipped {
+    transform: rotateY(180deg);
+}
+
+.glass-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow-md);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+body.light-mode .glass-card {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.flashcard-front {
+    z-index: 2;
+    transform: rotateY(0deg);
+}
+
+.flashcard-back {
+    transform: rotateY(180deg);
+    background: rgba(99, 102, 241, 0.03);
+}
+
+body.light-mode .flashcard-back {
+    background: rgba(79, 70, 229, 0.03);
+}
+
+.card-side-label {
+    position: absolute;
+    top: 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.flashcard-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.flash-eng {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 1.2;
+}
+
+.flash-chi {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.flash-notes {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-style: italic;
+    max-width: 400px;
+}
+
+.btn-speak-card {
+    background: var(--primary-light);
+    border: none;
+    color: var(--primary);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all var(--transition-fast);
+}
+
+.btn-speak-card:hover {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+.tap-hint {
+    position: absolute;
+    bottom: 16px;
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.flashcard-controls {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.action-question {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 14px;
+}
+
+/* Multiple choice elements */
+.choice-question-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.btn-voice-medium {
+    background: var(--primary-light);
+    border: none;
+    color: var(--primary);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.btn-voice-medium:hover {
+    background: var(--primary);
+    color: #fff;
+    transform: scale(1.08);
+}
+
+.choice-clue-box {
+    flex-grow: 1;
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    position: relative;
+}
+
+.choice-title {
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.choice-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    width: 100%;
+}
+
+.choice-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 16px 20px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--transition-fast);
+}
+
+.choice-btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+}
+
+.choice-btn.correct {
+    background: var(--accent-light) !important;
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    font-weight: 600;
+}
+
+.choice-btn.incorrect {
+    background: var(--danger-light) !important;
+    border-color: var(--danger) !important;
+    color: var(--danger) !important;
+}
+
+/* Feedback banner styling */
+.quiz-feedback-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    margin-top: 10px;
+    animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.quiz-feedback-banner.correct-banner {
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+}
+
+.quiz-feedback-banner.correct-banner .feedback-icon-box {
+    color: var(--accent);
+    font-size: 24px;
+}
+
+.quiz-feedback-banner.correct-banner h4 {
+    color: var(--accent);
+}
+
+.quiz-feedback-banner.incorrect-banner {
+    background: var(--danger-light);
+    border: 1px solid var(--danger);
+}
+
+.quiz-feedback-banner.incorrect-banner .feedback-icon-box {
+    color: var(--danger);
+    font-size: 24px;
+}
+
+.quiz-feedback-banner.incorrect-banner h4 {
+    color: var(--danger);
+}
+
+.feedback-text-box {
+    flex-grow: 1;
+}
+
+.feedback-text-box h4 {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.feedback-text-box p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}

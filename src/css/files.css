@@ -1,0 +1,99 @@
+/* File List & Translation Loader Styling */
+.select-file-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.file-list-container {
+    max-height: 380px;
+    overflow-y: auto;
+    margin: 16px 0;
+    padding-right: 4px;
+    flex-grow: 1;
+}
+
+.file-buttons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.file-btn {
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 17px;
+    text-align: left;
+    transition: all var(--transition-fast);
+}
+
+body.light-mode .file-btn {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.file-btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-hover);
+    transform: translateX(4px);
+}
+
+.file-btn.active {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+}
+
+.file-btn i {
+    color: var(--text-muted);
+    font-size: 16px;
+    transition: color var(--transition-fast);
+}
+
+.file-btn.active i {
+    color: var(--primary);
+}
+
+.file-list-loading {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 24px;
+    font-size: 16px;
+}
+
+.translation-loader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--primary-light);
+    border: 1px dashed var(--primary);
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.loader-spinner {
+    color: var(--primary);
+    font-size: 20px;
+}
+
+.loader-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.error-text {
+    color: var(--danger);
+    font-weight: 500;
+}

@@ -1,0 +1,121 @@
+/* App Container Layout */
+.app-container {
+    width: 1200px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    flex-shrink: 0;
+}
+
+/* Header */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    font-size: 28px;
+    color: var(--primary);
+    filter: drop-shadow(0 2px 8px rgba(99, 102, 241, 0.4));
+    transition: transform var(--transition-normal);
+}
+
+.header-logo:hover .logo-icon {
+    transform: rotate(-10deg) scale(1.1);
+}
+
+.header-logo h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--text) 30%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.logo-subtitle {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    -webkit-text-fill-color: initial;
+    background: none;
+}
+
+/* Navigation Tabs */
+.app-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.app-nav::-webkit-scrollbar {
+    height: 4px;
+}
+.app-nav::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+.nav-tab {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+}
+
+.nav-tab:hover {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.nav-tab.active {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: rgba(99, 102, 241, 0.3);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Main Content Panels */
+.app-main {
+    flex-grow: 1;
+}
+
+.tab-panel {
+    display: none;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.tab-panel.active {
+    display: block;
+}

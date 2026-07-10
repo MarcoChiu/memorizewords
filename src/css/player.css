@@ -1,0 +1,35 @@
+/* Playlist Player & Repetition Controls Styles */
+.flex-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+    width: 100%;
+}
+
+.list-player-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.list-player-controls .toggle-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.vocab-card.active-playing {
+    border-color: var(--primary) !important;
+    background: var(--primary-light) !important;
+    transform: translateY(-4px) scale(1.03) !important;
+    box-shadow: var(--shadow-glow), var(--shadow-md) !important;
+    animation: pulse-border 2s infinite ease-in-out;
+    z-index: 10;
+}

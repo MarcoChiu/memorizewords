@@ -1,0 +1,122 @@
+/* Quiz Results CSS */
+.quiz-results-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.results-header {
+    margin-bottom: 30px;
+}
+
+.trophy-box {
+    background: rgba(245, 158, 11, 0.1);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.trophy-icon {
+    font-size: 38px;
+    color: var(--warning);
+    filter: drop-shadow(0 4px 10px rgba(245, 158, 11, 0.4));
+}
+
+.results-score-panel {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.result-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result-number {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.result-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.results-details {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.results-details h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.results-list-container {
+    max-height: 480px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 20px;
+}
+
+.results-table th,
+.results-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.results-table th {
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+body.light-mode .results-table th {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.results-table tr:last-child td {
+    border-bottom: none;
+}
+
+.result-tag-correct {
+    color: var(--accent);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.result-tag-wrong {
+    color: var(--danger);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.results-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}

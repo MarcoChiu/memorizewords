@@ -1,0 +1,155 @@
+/* Settings Controls CSS */
+.settings-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.settings-form {
+    margin-top: 24px;
+}
+
+.slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.slider-value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 14px;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.slider-limit-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    width: 60px;
+}
+
+.slider-limit-label:last-child {
+    text-align: right;
+}
+
+/* Styled Range Input slider */
+.slider-container input[type="range"] {
+    flex-grow: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+}
+
+body.light-mode .slider-container input[type="range"] {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.slider-container input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.tts-test-box {
+    border: 1px solid var(--border);
+    padding: 18px;
+    border-radius: var(--radius-sm);
+    margin-top: 28px;
+    margin-bottom: 24px;
+}
+
+.tts-test-box h3 {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+}
+
+.test-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.test-input-group input {
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    outline: none;
+    font-size: 14px;
+}
+
+body.light-mode .test-input-group input {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.settings-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+/* Toast Notification Styles */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    background: #1e293b;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+    font-size: 14px;
+    font-weight: 500;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.toast.hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+}
+
+.toast-icon {
+    color: var(--primary);
+}
+
+/* Footer Styling */
+.app-footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+}

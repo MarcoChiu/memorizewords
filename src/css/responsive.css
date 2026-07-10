@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Mobile Responsive Styles (Media Queries)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .app-container {
+        padding: 12px 10px;
+    }
+
+    .app-header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .app-nav {
+        gap: 6px;
+        margin-bottom: 20px;
+    }
+
+    .nav-tab {
+        padding: 10px 14px;
+        font-size: 16px;
+        border-radius: var(--radius-sm);
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    /* File Selection & Display layout */
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .file-list-container {
+        max-height: none;
+        margin: 8px 0;
+    }
+
+    /* Transform vertical file list into horizontal scrolling bar on mobile */
+    .file-buttons-list {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 4px 0 10px 0;
+        gap: 10px;
+        scrollbar-width: thin;
+    }
+
+    .file-buttons-list::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .file-buttons-list::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 4px;
+    }
+
+    .file-btn {
+        padding: 10px 14px;
+        font-size: 15px;
+        white-space: nowrap;
+        transform: none !important;
+    }
+
+    .file-btn:hover {
+        transform: none !important;
+    }
+
+    /* Words List */
+    .vocab-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .vocab-card {
+        padding: 16px;
+    }
+
+    .vocab-card-english {
+        font-size: 22px;
+    }
+
+    /* Quiz Setup grid */
+    .quiz-setup-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* Quiz Arena */
+    .quiz-arena-container {
+        padding: 16px;
+    }
+
+    .quiz-play-card {
+        min-height: 240px;
+    }
+
+    .btn-voice-large {
+        width: 68px;
+        height: 68px;
+        font-size: 30px;
+    }
+
+    .chinese-text {
+        font-size: 20px;
+    }
+
+    .input-answer-section {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .input-answer-section input {
+        width: 100%;
+        font-size: 20px;
+        padding: 12px;
+    }
+
+    .input-answer-section .btn {
+        width: 100%;
+    }
+
+    /* Flashcards */
+    .flashcard-3d {
+        height: 240px;
+    }
+
+    .flash-eng {
+        font-size: 32px;
+    }
+
+    .flash-chi {
+        font-size: 28px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .action-buttons .btn {
+        width: 100%;
+    }
+
+    /* Quiz Results */
+    .results-score-panel {
+        gap: 20px;
+    }
+
+    .result-number {
+        font-size: 34px;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 12px 14px;
+        font-size: 17px;
+    }
+
+    .results-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .results-actions .btn {
+        width: 100%;
+    }
+
+    /* Playlist Player */
+    .list-player-controls {
+        width: 100%;
+        justify-content: flex-start;
+        border-top: 1px dashed var(--border);
+        padding-top: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .choice-options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-logo h1 {
+        font-size: 18px;
+    }
+
+    .logo-subtitle {
+        font-size: 10px;
+    }
+
+    .app-nav {
+        margin-bottom: 12px;
+    }
+}

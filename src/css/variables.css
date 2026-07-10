@@ -1,0 +1,77 @@
+/* CSS Custom Properties & Design System */
+:root {
+    /* Fonts */
+    --font-display: 'Outfit', 'Inter', sans-serif;
+    --font-body: 'Inter', 'Noto Sans TC', sans-serif;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s ease;
+
+    /* Theme Defaults (Dark Mode) */
+    --bg-app: #090d16;
+    --bg-gradient: radial-gradient(circle at 50% 50%, #151d30 0%, #090d16 100%);
+    --surface: rgba(17, 25, 40, 0.65);
+    --surface-hover: rgba(26, 38, 57, 0.8);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.15);
+
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-light: rgba(99, 102, 241, 0.15);
+
+    --accent: #10b981;
+    --accent-hover: #059669;
+    --accent-light: rgba(16, 185, 129, 0.15);
+
+    --danger: #f43f5e;
+    --danger-hover: #e11d48;
+    --danger-light: rgba(244, 63, 94, 0.15);
+
+    --warning: #f59e0b;
+
+    --text: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.25);
+
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+}
+
+/* Light Mode Theme Overrides */
+body.light-mode {
+    --bg-app: #f1f5f9;
+    --bg-gradient: radial-gradient(circle at 50% 50%, #f8fafc 0%, #e2e8f0 100%);
+    --surface: rgba(255, 255, 255, 0.7);
+    --surface-hover: rgba(255, 255, 255, 0.85);
+    --border: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(0, 0, 0, 0.15);
+
+    --primary: #4f46e5;
+    --primary-hover: #3730a3;
+    --primary-light: rgba(79, 70, 229, 0.08);
+
+    --accent: #059669;
+    --accent-hover: #047857;
+    --accent-light: rgba(5, 150, 105, 0.08);
+
+    --danger: #e11d48;
+    --danger-hover: #be123c;
+    --danger-light: rgba(225, 29, 72, 0.08);
+
+    --text: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.12);
+    --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.15);
+}
