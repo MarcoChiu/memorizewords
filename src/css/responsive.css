@@ -10,8 +10,10 @@
     .app-header {
         margin-bottom: 16px;
         padding-bottom: 12px;
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
     }
 
     .app-nav {
@@ -153,6 +155,14 @@
 
     .result-number {
         font-size: 34px;
+    }
+
+    .results-list-container {
+        overflow-x: auto !important;
+    }
+
+    .results-table {
+        min-width: 600px;
     }
 
     .results-table th,
