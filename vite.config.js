@@ -13,6 +13,9 @@ const getBuildTime = () => {
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    port: 3001
+  },
   plugins: [react()],
   base: './',
   define: {

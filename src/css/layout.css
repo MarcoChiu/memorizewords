@@ -1,13 +1,12 @@
 /* App Container Layout */
 .app-container {
-    width: 1200px;
-    max-width: 100%;
+    width: 100%;
+    max-width: var(--container-width, 1200px);
     margin: 0 auto;
     padding: 24px 16px;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    flex-shrink: 0;
+    flex-grow: 1;
 }
 
 /* Header */

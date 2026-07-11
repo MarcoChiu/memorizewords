@@ -187,6 +187,13 @@
         border-top: 1px dashed var(--border);
         padding-top: 12px;
     }
+
+    /* Toast Notification */
+    .toast {
+        width: calc(100% - 40px);
+        max-width: none;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 480px) {
