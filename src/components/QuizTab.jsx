@@ -409,11 +409,6 @@ export default function QuizTab({
                 ></div>
               </div>
             </div>
-            <div className="quiz-score-badge">
-              <i className="fa-solid fa-check"></i> <span id="quiz-score-correct">{scoreCorrect}</span>
-              <span className="divider">|</span>
-              <i className="fa-solid fa-xmark"></i> <span id="quiz-score-wrong">{scoreWrong}</span>
-            </div>
             <button 
               id="btn-quit-quiz" 
               onClick={handleQuitQuiz}
