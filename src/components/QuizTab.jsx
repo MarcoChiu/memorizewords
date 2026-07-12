@@ -184,7 +184,20 @@ export default function QuizTab({
     const correctAnswer = currentQuestion.english.trim();
 
     const formatText = text => text.replace(/[.,/#!$%^&*;:{}=\-_`~()?]/g, "").replace(/\s+/g, " ").trim().toLowerCase();
-    const isCorrect = formatText(trimmedAnswer) === formatText(correctAnswer);
+    const normalizeLookalikes = text => text.replace(/[i1]/g, 'l');
+
+    const formattedUser = formatText(trimmedAnswer);
+    const formattedCorrect = formatText(correctAnswer);
+    const isCorrect = formattedUser === formattedCorrect || 
+                      normalizeLookalikes(formattedUser) === normalizeLookalikes(formattedCorrect);
+
+    console.log("Spelling Check:", {
+      userAnswer,
+      correctAnswer,
+      formattedUser,
+      formattedCorrect,
+      isCorrect
+    });
 
     setIsAnswered(true);
     recordResult(currentQuestion, trimmedAnswer, isCorrect);

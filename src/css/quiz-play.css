@@ -168,7 +168,7 @@ body.light-mode .progress-bar-bg {
     color: var(--text);
     padding: 14px 18px;
     font-size: 22px;
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     text-align: center;
     outline: none;
     transition: all var(--transition-fast);

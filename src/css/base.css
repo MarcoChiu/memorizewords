@@ -13,6 +13,7 @@ html {
 
 body {
     font-family: var(--font-body);
+    font-feature-settings: "cv05" 1, "cv08" 1, "cv09" 1;
     background: var(--bg-app);
     background-image: var(--bg-gradient);
     color: var(--text);
