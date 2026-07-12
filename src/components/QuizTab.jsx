@@ -199,14 +199,8 @@ export default function QuizTab({
       isCorrect
     });
 
-    setIsAnswered(true);
     recordResult(currentQuestion, trimmedAnswer, isCorrect);
-    
-    setFeedback({
-      show: true,
-      isCorrect,
-      text: isCorrect ? `答對了！答案確為: "${correctAnswer}"` : `答錯了，正確答案是: "${correctAnswer}"`
-    });
+    handleNextQuestion();
   };
 
   // Flashcard Mode Evaluation
@@ -224,15 +218,8 @@ export default function QuizTab({
     const currentQuestion = questions[currentIndex];
     const isCorrect = selectedOpt.id === currentQuestion.id;
 
-    setIsAnswered(true);
-    setUserAnswer(selectedOpt.english);
     recordResult(currentQuestion, selectedOpt.english, isCorrect);
-
-    setFeedback({
-      show: true,
-      isCorrect,
-      text: isCorrect ? `答對了！答案是: "${currentQuestion.english}"` : `答錯了，正確答案是: "${currentQuestion.english}"`
-    });
+    handleNextQuestion();
   };
 
   const handleNextQuestion = () => {
