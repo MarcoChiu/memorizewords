@@ -23,7 +23,7 @@ export default function QuizTab({
   const [scoreWrong, setScoreWrong] = useState(0);
   const [results, setResults] = useState([]);
   const [wrongsOnly, setWrongsOnly] = useState([]);
-  
+
   // Question Answering State
   const [isAnswered, setIsAnswered] = useState(false);
   const [userAnswer, setUserAnswer] = useState('');
@@ -75,12 +75,12 @@ export default function QuizTab({
   // Generate Multiple Choice Distractors
   const generateChoiceOptions = (question) => {
     let options = [question];
-    
+
     // Distractors pool from the current quiz questions
     const distractorsPool = questions.filter(v => v.id !== question.id);
     const shuffledDistractors = shuffleArray(distractorsPool);
     const selectedDistractors = shuffledDistractors.slice(0, 3);
-    
+
     options = [...options, ...selectedDistractors];
 
     // If still not enough options (e.g. quiz count is small), draw from loadedVocabs as fallback
@@ -188,8 +188,8 @@ export default function QuizTab({
 
     const formattedUser = formatText(trimmedAnswer);
     const formattedCorrect = formatText(correctAnswer);
-    const isCorrect = formattedUser === formattedCorrect || 
-                      normalizeLookalikes(formattedUser) === normalizeLookalikes(formattedCorrect);
+    const isCorrect = formattedUser === formattedCorrect ||
+      normalizeLookalikes(formattedUser) === normalizeLookalikes(formattedCorrect);
 
     console.log("Spelling Check:", {
       userAnswer,
@@ -207,7 +207,7 @@ export default function QuizTab({
   const handleFlashcardRating = (isCorrect) => {
     const currentQuestion = questions[currentIndex];
     recordResult(currentQuestion, isCorrect ? "記住了" : "沒記住", isCorrect);
-    
+
     handleNextQuestion();
   };
 
@@ -255,7 +255,7 @@ export default function QuizTab({
             <i className="fa-solid fa-gamepad quiz-decor-icon"></i>
             <h2>英文智慧抽考</h2>
             <p id="quiz-setup-subtitle">
-              {loadedVocabs.length > 0 
+              {loadedVocabs.length > 0
                 ? `將使用目前載入的單字進行考驗 (${loadedVocabs.length} 個單字)`
                 : '請先在第一頁選擇載入檔案，或在此進行歷史混合抽考'
               }
@@ -268,10 +268,10 @@ export default function QuizTab({
               <label><i className="fa-solid fa-wand-magic-sparkles"></i> 選擇測驗模式</label>
               <div className="mode-options">
                 <label className={`mode-card ${quizMode === 'spelling' ? 'active' : ''}`}>
-                  <input 
-                    type="radio" 
-                    name="quiz-mode" 
-                    value="spelling" 
+                  <input
+                    type="radio"
+                    name="quiz-mode"
+                    value="spelling"
                     checked={quizMode === 'spelling'}
                     onChange={() => setQuizMode('spelling')}
                   />
@@ -281,10 +281,10 @@ export default function QuizTab({
                 </label>
 
                 <label className={`mode-card ${quizMode === 'choice' ? 'active' : ''}`}>
-                  <input 
-                    type="radio" 
-                    name="quiz-mode" 
-                    value="choice" 
+                  <input
+                    type="radio"
+                    name="quiz-mode"
+                    value="choice"
                     checked={quizMode === 'choice'}
                     onChange={() => setQuizMode('choice')}
                   />
@@ -294,10 +294,10 @@ export default function QuizTab({
                 </label>
 
                 <label className={`mode-card ${quizMode === 'flashcard' ? 'active' : ''}`}>
-                  <input 
-                    type="radio" 
-                    name="quiz-mode" 
-                    value="flashcard" 
+                  <input
+                    type="radio"
+                    name="quiz-mode"
+                    value="flashcard"
                     checked={quizMode === 'flashcard'}
                     onChange={() => setQuizMode('flashcard')}
                   />
@@ -312,7 +312,7 @@ export default function QuizTab({
             <div className="setup-side-panel">
               <div className="setup-group">
                 <label htmlFor="quiz-scope"><i className="fa-solid fa-layer-group"></i> 抽考範圍</label>
-                <select 
+                <select
                   id="quiz-scope"
                   value={quizScope}
                   onChange={(e) => setQuizScope(e.target.value)}
@@ -324,7 +324,7 @@ export default function QuizTab({
 
               <div className="setup-group">
                 <label htmlFor="quiz-count"><i className="fa-solid fa-arrow-down-9-1"></i> 抽考題數</label>
-                <select 
+                <select
                   id="quiz-count"
                   value={quizCount}
                   onChange={(e) => setQuizCount(e.target.value)}
@@ -338,8 +338,8 @@ export default function QuizTab({
 
               <div className="setup-group checkbox-group">
                 <label className="toggle-switch">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     id="quiz-auto-play"
                     checked={autoPlay}
                     onChange={(e) => setAutoPlay(e.target.checked)}
@@ -351,8 +351,8 @@ export default function QuizTab({
 
               <div className="setup-group checkbox-group">
                 <label className="toggle-switch">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     id="quiz-read-twice"
                     checked={readTwice}
                     onChange={(e) => setReadTwice(e.target.checked)}
@@ -362,8 +362,8 @@ export default function QuizTab({
                 </label>
               </div>
 
-              <button 
-                id="btn-start-quiz" 
+              <button
+                id="btn-start-quiz"
                 onClick={() => handleStartQuiz()}
                 className="btn btn-primary btn-block btn-lg"
                 disabled={isAssembling || (quizScope === 'current-category' && loadedVocabs.length === 0)}
@@ -374,7 +374,7 @@ export default function QuizTab({
                   <><i className="fa-solid fa-play"></i> 開始考驗</>
                 )}
               </button>
-              
+
               {quizScope === 'current-category' && loadedVocabs.length === 0 && (
                 <div id="start-quiz-hint" className="start-quiz-hint">
                   目前選取的分類中無任何單字，請先至第一頁單字分類庫新增單字，或切換範圍為「混合隨機抽考」！
@@ -402,15 +402,15 @@ export default function QuizTab({
                 第 <span id="quiz-current-index">{currentIndex + 1}</span> 題 / 共 <span id="quiz-total-questions">{questions.length}</span> 題
               </span>
               <div className="progress-bar-bg">
-                <div 
-                  id="quiz-progress-fill" 
+                <div
+                  id="quiz-progress-fill"
                   className="progress-bar-fill"
                   style={{ width: `${progressPercent}%` }}
                 ></div>
               </div>
             </div>
-            <button 
-              id="btn-quit-quiz" 
+            <button
+              id="btn-quit-quiz"
               onClick={handleQuitQuiz}
               className="btn btn-secondary-outline btn-sm"
               style={{ marginLeft: '12px' }}
@@ -424,8 +424,8 @@ export default function QuizTab({
             <div className="quiz-card-wrapper">
               <div id="quiz-card-spelling" className="quiz-play-card">
                 <div className="audio-prompt-section">
-                  <button 
-                    id="btn-quiz-speak" 
+                  <button
+                    id="btn-quiz-speak"
                     onClick={() => speak(currentQuestion.english)}
                     className="btn-voice-large"
                     title="朗讀發音"
@@ -434,7 +434,7 @@ export default function QuizTab({
                   </button>
                   <span className="audio-hint-text">點擊朗讀發音</span>
                 </div>
-                
+
                 <div className="chinese-clue">
                   <span className="clue-tag">中文提示</span>
                   <span className="chinese-text">{currentQuestion.chinese}</span>
@@ -452,17 +452,17 @@ export default function QuizTab({
                     autoComplete="off"
                   />
                   {!isAnswered ? (
-                    <button 
-                      type="submit" 
-                      id="btn-spelling-submit" 
+                    <button
+                      type="submit"
+                      id="btn-spelling-submit"
                       className="btn btn-primary"
                     >
                       送出答案
                     </button>
                   ) : (
-                    <button 
-                      type="button" 
-                      onClick={handleNextQuestion} 
+                    <button
+                      type="button"
+                      onClick={handleNextQuestion}
                       className="btn btn-primary"
                     >
                       下一題 <i className="fa-solid fa-arrow-right"></i>
@@ -478,8 +478,8 @@ export default function QuizTab({
             <div className="quiz-card-wrapper">
               <div id="quiz-card-choice" className="quiz-play-card">
                 <div className="choice-question-header">
-                  <button 
-                    id="btn-choice-speak" 
+                  <button
+                    id="btn-choice-speak"
                     onClick={() => speak(currentQuestion.english)}
                     className="btn-voice-medium"
                     title="朗讀發音"
@@ -498,7 +498,7 @@ export default function QuizTab({
                   {choiceOptions.map((opt) => {
                     const isCorrectOption = opt.id === currentQuestion.id;
                     let btnClass = 'choice-btn';
-                    
+
                     if (isAnswered) {
                       if (isCorrectOption) {
                         btnClass += ' correct';
@@ -522,8 +522,8 @@ export default function QuizTab({
 
                 {isAnswered && (
                   <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                    <button 
-                      onClick={handleNextQuestion} 
+                    <button
+                      onClick={handleNextQuestion}
                       className="btn btn-primary"
                     >
                       下一題 <i className="fa-solid fa-arrow-right"></i>
@@ -538,8 +538,8 @@ export default function QuizTab({
           {quizMode === 'flashcard' && (
             <div className="quiz-card-wrapper">
               <div id="quiz-card-flashcard" className="quiz-play-card">
-                <div 
-                  id="flashcard-3d" 
+                <div
+                  id="flashcard-3d"
                   className={`flashcard-3d ${flashcardFlipped ? 'flipped' : ''}`}
                   onClick={() => setFlashcardFlipped(!flashcardFlipped)}
                 >
@@ -547,8 +547,8 @@ export default function QuizTab({
                     <span className="card-side-label">Front (英文)</span>
                     <div className="flashcard-content">
                       <h3 className="flash-eng">{currentQuestion.english}</h3>
-                      <button 
-                        id="btn-flashcard-speak" 
+                      <button
+                        id="btn-flashcard-speak"
                         onClick={(e) => {
                           e.stopPropagation();
                           speak(currentQuestion.english);
@@ -563,7 +563,7 @@ export default function QuizTab({
                       <i className="fa-solid fa-arrows-rotate"></i> 點擊卡片以翻面看中文
                     </span>
                   </div>
-                  
+
                   <div className="glass-card flashcard-back">
                     <span className="card-side-label">Back (中文)</span>
                     <div className="flashcard-content">
@@ -575,21 +575,21 @@ export default function QuizTab({
                   </div>
                 </div>
 
-                <div 
-                  id="flashcard-actions" 
+                <div
+                  id="flashcard-actions"
                   className={`flashcard-controls ${flashcardFlipped ? '' : 'hidden'}`}
                 >
                   <span className="action-question">您記住這個單字了嗎？</span>
                   <div className="action-buttons">
-                    <button 
-                      id="btn-flash-wrong" 
+                    <button
+                      id="btn-flash-wrong"
                       onClick={() => handleFlashcardRating(false)}
                       className="btn btn-danger-outline"
                     >
                       <i className="fa-solid fa-face-frown"></i> 沒記住
                     </button>
-                    <button 
-                      id="btn-flash-correct" 
+                    <button
+                      id="btn-flash-correct"
                       onClick={() => handleFlashcardRating(true)}
                       className="btn btn-success"
                     >
@@ -603,8 +603,8 @@ export default function QuizTab({
 
           {/* Feedback banner */}
           {feedback.show && (
-            <div 
-              id="quiz-feedback" 
+            <div
+              id="quiz-feedback"
               className={`quiz-feedback-banner ${feedback.isCorrect ? 'correct-banner' : 'incorrect-banner'}`}
             >
               <div className="feedback-icon-box">
@@ -663,8 +663,8 @@ export default function QuizTab({
                 本次測驗中您共有 <strong><span id="retry-count">{wrongsOnly.length}</span></strong> 個單字答錯或未記住。
                 建議立即進行針對性重試，直到完全掌握！
               </p>
-              <button 
-                id="btn-retry-wrongs" 
+              <button
+                id="btn-retry-wrongs"
                 onClick={handleRetryWrongs}
                 className="btn btn-danger btn-lg"
                 style={{ marginTop: '16px' }}
@@ -708,8 +708,8 @@ export default function QuizTab({
           </div>
 
           <div className="results-footer" style={{ marginTop: '30px' }}>
-            <button 
-              id="btn-finish-results" 
+            <button
+              id="btn-finish-results"
               onClick={handleResetToSetup}
               className="btn btn-secondary btn-block"
             >

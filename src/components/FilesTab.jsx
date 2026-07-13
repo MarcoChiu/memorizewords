@@ -59,7 +59,7 @@ export default function FilesTab({
     }
 
     const currentVocab = loadedVocabs[playingIndex];
-    
+
     // Find the element and scroll to it
     const element = document.getElementById(`card-${currentVocab.id}`);
     if (element) {
@@ -69,7 +69,7 @@ export default function FilesTab({
     // Trigger TTS
     speak(currentVocab.english, () => {
       if (!isPlayingRef.current) return;
-      
+
       const timer = setTimeout(() => {
         if (!isPlayingRef.current) return;
         setPlayingIndex(prev => prev + 1);
@@ -157,7 +157,7 @@ export default function FilesTab({
           <i className="fa-solid fa-user-lock empty-icon" style={{ fontSize: '48px', color: 'var(--primary)', marginBottom: '20px' }}></i>
           <h3 style={{ fontSize: '22px', marginBottom: '12px', fontWeight: 600 }}>請先登入帳號</h3>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.6, fontSize: '15px' }}>
-            EngFlow 智慧單字庫已升級為雲端資料庫儲存。請登入您的 Google 帳號，即可開始建立專屬分類、增刪單字卡，並自動進行雲端同步！
+            簡單考 智慧單字庫已升級為雲端資料庫儲存。請登入您的 Google 帳號，即可開始建立專屬分類、增刪單字卡，並自動進行雲端同步！
           </p>
           <button onClick={onLogin} className="btn btn-primary btn-lg" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 28px', borderRadius: '30px' }}>
             <i className="fa-brands fa-google"></i>
@@ -182,9 +182,9 @@ export default function FilesTab({
 
           {/* Add Category Box */}
           <div className="add-category-box" style={{ padding: '12px 0', borderBottom: '1px solid var(--border)', display: 'flex', gap: '8px' }}>
-            <input 
-              type="text" 
-              placeholder="新增分類名稱..." 
+            <input
+              type="text"
+              placeholder="新增分類名稱..."
               value={newCatName}
               onChange={(e) => setNewCatName(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleAddCategorySubmit(); }}
@@ -213,7 +213,7 @@ export default function FilesTab({
                 categories.map((cat) => {
                   const isActive = cat.id === activeCategoryId;
                   return (
-                    <div 
+                    <div
                       key={cat.id}
                       className={`category-item-wrapper ${isActive ? 'active' : ''}`}
                     >
@@ -271,7 +271,7 @@ export default function FilesTab({
             <div className="words-header-info">
               <h2 id="active-file-title">{activeCategory ? activeCategory.name : '請選擇單字分類'}</h2>
               <p id="active-file-desc">
-                {activeCategory 
+                {activeCategory
                   ? isTranslating ? '正在寫入單字並翻譯...' : `此分類下共有 ${loadedVocabs.length} 個單字。`
                   : '請在左側點選分類以查看單字卡。'
                 }
@@ -282,17 +282,17 @@ export default function FilesTab({
             {loadedVocabs.length > 0 && !isTranslating && (
               <div id="list-player-controls" className="list-player-controls">
                 {!isPlaying ? (
-                  <button 
-                    id="btn-player-play" 
-                    onClick={handleStartPlayer} 
+                  <button
+                    id="btn-player-play"
+                    onClick={handleStartPlayer}
                     className="btn btn-primary btn-sm"
                   >
                     <i className="fa-solid fa-circle-play"></i> 自動朗讀全部 (跟讀)
                   </button>
                 ) : (
-                  <button 
-                    id="btn-player-stop" 
-                    onClick={handleStopPlayer} 
+                  <button
+                    id="btn-player-stop"
+                    onClick={handleStopPlayer}
                     className="btn btn-danger-outline btn-sm"
                   >
                     <i className="fa-solid fa-circle-stop"></i> 停止朗讀
@@ -371,18 +371,18 @@ export default function FilesTab({
                     >
                       {isEditing ? (
                         <div className="vocab-card-edit-mode" style={{ display: 'flex', flexDirection: 'column', gap: '8px', flexGrow: 1, justifyContent: 'center' }}>
-                          <input 
-                            type="text" 
-                            value={editingWordEng} 
-                            onChange={(e) => setEditingWordEng(e.target.value)} 
+                          <input
+                            type="text"
+                            value={editingWordEng}
+                            onChange={(e) => setEditingWordEng(e.target.value)}
                             className="form-control"
                             style={{ padding: '6px 10px', fontSize: '14px' }}
                             placeholder="英文..."
                           />
-                          <input 
-                            type="text" 
-                            value={editingWordChi} 
-                            onChange={(e) => setEditingWordChi(e.target.value)} 
+                          <input
+                            type="text"
+                            value={editingWordChi}
+                            onChange={(e) => setEditingWordChi(e.target.value)}
                             className="form-control"
                             style={{ padding: '6px 10px', fontSize: '14px' }}
                             placeholder="中文翻譯..."
@@ -401,7 +401,7 @@ export default function FilesTab({
                           <div className="vocab-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span className="tag-badge">雲端字卡</span>
                           </div>
-                          
+
                           <div className="vocab-english-area" style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <h3 className="vocab-card-english" style={{ wordBreak: 'break-word', fontSize: '20px' }}>{item.english}</h3>
                             <button
@@ -412,7 +412,7 @@ export default function FilesTab({
                               <i className="fa-solid fa-volume-high"></i>
                             </button>
                           </div>
-                          
+
                           <p
                             className={`vocab-card-chinese ${isBlurred ? 'blurred' : ''}`}
                             onClick={() => handleToggleCardBlur(item.id)}
@@ -422,17 +422,17 @@ export default function FilesTab({
                           </p>
 
                           <div className="vocab-card-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', borderTop: '1px solid var(--border)', paddingTop: '8px', marginTop: 'auto' }}>
-                            <button 
-                              onClick={() => handleStartWordEdit(item)} 
-                              className="btn-card-action btn-edit" 
+                            <button
+                              onClick={() => handleStartWordEdit(item)}
+                              className="btn-card-action btn-edit"
                               title="編輯單字"
                               style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: '4px' }}
                             >
                               <i className="fa-regular fa-pen-to-square"></i>
                             </button>
-                            <button 
-                              onClick={() => onDeleteWord(item.id)} 
-                              className="btn-card-action btn-delete" 
+                            <button
+                              onClick={() => onDeleteWord(item.id)}
+                              className="btn-card-action btn-delete"
                               title="刪除單字"
                               style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--danger)', padding: '4px' }}
                             >
@@ -451,7 +451,7 @@ export default function FilesTab({
                   <i className="fa-solid fa-file-circle-plus empty-icon"></i>
                   <h3>分類中尚無單字</h3>
                   <p>
-                    {activeCategoryId 
+                    {activeCategoryId
                       ? '請在上方輸入英文與中文，為此分類新增第一個單字字卡！'
                       : '請先在左側選取或建立單字分類庫。'
                     }
