@@ -196,3 +196,14 @@ body.light-mode .form-control {
 body.light-mode .form-control:focus {
     background: rgba(0, 0, 0, 0.04);
 }
+
+/* Select dropdown options styling for theme readability */
+select option {
+    background-color: #151d30;
+    color: #f8fafc;
+}
+
+body.light-mode select option {
+    background-color: #ffffff;
+    color: #0f172a;
+}
