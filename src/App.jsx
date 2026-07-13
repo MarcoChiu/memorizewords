@@ -6,18 +6,18 @@ import FilesTab from './components/FilesTab';
 import QuizTab from './components/QuizTab';
 import SettingsTab from './components/SettingsTab';
 import { translatePhrasesBatch } from './utils/translation';
-import { 
-  auth, 
-  db, 
-  signInWithGoogle, 
-  logOut, 
-  isConfigured 
+import {
+  auth,
+  db,
+  signInWithGoogle,
+  logOut,
+  isConfigured
 } from './utils/firebase';
-import { 
-  doc, 
-  getDoc, 
-  setDoc, 
-  collection, 
+import {
+  doc,
+  getDoc,
+  setDoc,
+  collection,
   getDocs,
   query,
   orderBy,
@@ -42,7 +42,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isTranslating, setIsTranslating] = useState(false);
   const [translationProgress, setTranslationProgress] = useState('0/0');
-  
+
   // TTS Settings
   const [settings, setSettings] = useState({
     voiceURI: '',
@@ -55,7 +55,7 @@ export default function App() {
   // Toast State
   const [toast, setToast] = useState({ show: false, message: '' });
   const toastTimeoutRef = useRef(null);
-  
+
   // TTS Ref
   const currentSpeechSequenceId = useRef(0);
 
@@ -64,7 +64,7 @@ export default function App() {
   const [isFirebaseReady, setIsFirebaseReady] = useState(isConfigured);
 
   const loadLocalSettingsAndFiles = () => {
-    const localSettings = localStorage.getItem("engflow_settings_v2");
+    const localSettings = localStorage.getItem("簡單考_settings_v2");
     let loadedSettings = {
       voiceURI: '',
       rate: DEFAULTS.rate,
@@ -84,7 +84,7 @@ export default function App() {
     const activeTheme = loadedSettings.theme || DEFAULTS.theme;
     setTheme(activeTheme);
     document.body.className = activeTheme === 'light' ? 'light-mode' : 'dark-mode';
-    
+
     setCategories([]);
     setActiveCategoryId('');
     setLoadedVocabs([]);
@@ -106,17 +106,17 @@ export default function App() {
       // 2. Sync Settings
       const settingsRef = doc(db, 'users', firebaseUser.uid, 'settings', 'preference');
       const settingsSnap = await getDoc(settingsRef);
-      
+
       let activeSettings = { ...settings };
       if (settingsSnap.exists()) {
         const data = settingsSnap.data();
         activeSettings = { ...activeSettings, ...data };
         setSettings(activeSettings);
-        
+
         const activeTheme = activeSettings.theme || DEFAULTS.theme;
         setTheme(activeTheme);
         document.body.className = activeTheme === 'light' ? 'light-mode' : 'dark-mode';
-        localStorage.setItem("engflow_settings_v2", JSON.stringify(activeSettings));
+        localStorage.setItem("簡單考_settings_v2", JSON.stringify(activeSettings));
       } else {
         // First login, push current local settings to firestore
         await setDoc(settingsRef, {
@@ -128,7 +128,7 @@ export default function App() {
 
       // 3. Load categories
       await fetchCategories(firebaseUser.uid);
-      
+
     } catch (error) {
       console.error("Error syncing user data from Firestore:", error);
       showToast("同步雲端資料失敗");
@@ -206,10 +206,10 @@ export default function App() {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
     document.body.className = nextTheme === 'light' ? 'light-mode' : 'dark-mode';
-    
+
     const newSettings = { ...settings, theme: nextTheme };
     setSettings(newSettings);
-    localStorage.setItem("engflow_settings_v2", JSON.stringify(newSettings));
+    localStorage.setItem("簡單考_settings_v2", JSON.stringify(newSettings));
     showToast("主題已切換");
 
     if (user && db) {
@@ -260,7 +260,7 @@ export default function App() {
         list.push({ id: d.id, ...d.data() });
       });
       setCategories(list);
-      
+
       if (list.length > 0) {
         const firstCatId = list[0].id;
         setActiveCategoryId(firstCatId);
@@ -306,7 +306,7 @@ export default function App() {
         createdAt: new Date().toISOString()
       });
       showToast(`已新增分類 "${name}"`);
-      
+
       const categoriesRef2 = collection(db, 'users', user.uid, 'categories');
       const q = query(categoriesRef2, orderBy('createdAt', 'desc'));
       const snap = await getDocs(q);
@@ -331,7 +331,7 @@ export default function App() {
         name: newName.trim(),
         updatedAt: new Date().toISOString()
       }, { merge: true });
-      
+
       setCategories(prev => prev.map(c => c.id === categoryId ? { ...c, name: newName.trim() } : c));
       showToast("分類已更名");
     } catch (e) {
@@ -343,23 +343,23 @@ export default function App() {
   const handleDeleteCategory = async (categoryId) => {
     if (!user || !db || !categoryId) return;
     if (!window.confirm("確定要刪除此分類及其底下的所有單字嗎？")) return;
-    
+
     setIsLoading(true);
     try {
       const vocabsRef = collection(db, 'users', user.uid, 'categories', categoryId, 'vocabs');
       const snap = await getDocs(vocabsRef);
-      
+
       const batch = writeBatch(db);
       snap.forEach(d => {
         batch.delete(d.ref);
       });
-      
+
       const catDocRef = doc(db, 'users', user.uid, 'categories', categoryId);
       batch.delete(catDocRef);
-      
+
       await batch.commit();
       showToast("分類已刪除");
-      
+
       const updatedCats = categories.filter(c => c.id !== categoryId);
       setCategories(updatedCats);
       if (activeCategoryId === categoryId) {
@@ -384,7 +384,7 @@ export default function App() {
       showToast("請先選擇一個單字分類！");
       return;
     }
-    
+
     setIsTranslating(true);
     try {
       let chineseTranslation = chinese.trim();
@@ -394,7 +394,7 @@ export default function App() {
         chineseTranslation = transDict[english.trim().toLowerCase()] || "（未能取得翻譯）";
         setTranslationProgress("1/1");
       }
-      
+
       const vocabsRef = collection(db, 'users', user.uid, 'categories', activeCategoryId, 'vocabs');
       const newDoc = doc(vocabsRef);
       const wordData = {
@@ -405,7 +405,7 @@ export default function App() {
         createdAt: new Date().toISOString()
       };
       await setDoc(newDoc, wordData);
-      
+
       setLoadedVocabs(prev => [...prev, { id: newDoc.id, ...wordData }]);
       showToast(`已新增單字 "${english}"`);
     } catch (e) {
@@ -426,7 +426,7 @@ export default function App() {
         updatedAt: new Date().toISOString()
       };
       await setDoc(vocabRef, updatedData, { merge: true });
-      
+
       setLoadedVocabs(prev => prev.map(v => v.id === vocabId ? { ...v, ...updatedData } : v));
       showToast("單字已修改");
     } catch (e) {
@@ -440,7 +440,7 @@ export default function App() {
     try {
       const vocabRef = doc(db, 'users', user.uid, 'categories', activeCategoryId, 'vocabs', vocabId);
       await deleteDoc(vocabRef);
-      
+
       setLoadedVocabs(prev => prev.filter(v => v.id !== vocabId));
       showToast("單字已刪除");
     } catch (e) {
@@ -537,7 +537,7 @@ export default function App() {
       const allVocabs = [];
       const categoriesRef = collection(db, 'users', user.uid, 'categories');
       const catsSnap = await getDocs(categoriesRef);
-      
+
       const promises = [];
       catsSnap.forEach(catDoc => {
         const catId = catDoc.id;
@@ -554,7 +554,7 @@ export default function App() {
           return catVocabs;
         }));
       });
-      
+
       const results = await Promise.all(promises);
       results.forEach(res => {
         allVocabs.push(...res);
@@ -566,7 +566,7 @@ export default function App() {
         const engKey = item.english.trim();
         if (seenEnglish.has(engKey.toLowerCase())) return;
         seenEnglish.add(engKey.toLowerCase());
-        
+
         pool.push({
           id: item.id,
           english: item.english,
@@ -575,7 +575,7 @@ export default function App() {
           correctCount: item.correctCount || 0
         });
       });
-      
+
       return pool;
     } catch (e) {
       console.error("Error assembling all vocabs:", e);
@@ -586,7 +586,7 @@ export default function App() {
   const handleSaveSettings = async (newSettings) => {
     const updated = { ...settings, ...newSettings };
     setSettings(updated);
-    localStorage.setItem("engflow_settings_v2", JSON.stringify(updated));
+    localStorage.setItem("簡單考_settings_v2", JSON.stringify(updated));
     showToast("設定已儲存");
 
     if (user && db) {
@@ -611,7 +611,7 @@ export default function App() {
       speechMode: DEFAULTS.speechMode
     };
     setSettings(reset);
-    localStorage.setItem("engflow_settings_v2", JSON.stringify(reset));
+    localStorage.setItem("簡單考_settings_v2", JSON.stringify(reset));
     showToast("已重設為預設值");
 
     if (user && db) {
@@ -632,15 +632,15 @@ export default function App() {
         <div className="circle circle-2"></div>
       </div>
 
-      <Header 
-        theme={theme} 
-        onToggleTheme={handleToggleTheme} 
+      <Header
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
         user={user}
         onLogin={handleLogin}
         onLogout={handleLogout}
         isFirebaseReady={isFirebaseReady}
       />
-      
+
       <Navigation activeTab={activeTab} onSwitchTab={setActiveTab} />
 
       <main className="app-main">
@@ -691,7 +691,7 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <p>&copy; 2026 EngFlow. React 元件化版本，支援單字翻譯、語音跟讀與智慧拼字測驗。</p>
+        <p>&copy; 2026 簡單考. React 元件化版本，支援單字翻譯、語音跟讀與智慧拼字測驗。</p>
       </footer>
 
       {/* Notification Toast */}
