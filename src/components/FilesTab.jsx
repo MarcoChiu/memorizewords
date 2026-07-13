@@ -1,25 +1,41 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 export default function FilesTab({
-  files,
-  activeFileName,
-  localFiles,
+  categories,
+  activeCategoryId,
   loadedVocabs,
   isLoading,
   translationProgress,
   isTranslating,
-  onRefreshFiles,
-  onLoadFile,
-  onUploadLocalFiles,
+  onAddCategory,
+  onEditCategory,
+  onDeleteCategory,
+  onSelectCategory,
+  onAddWord,
+  onEditWord,
+  onDeleteWord,
   speak,
-  showToast
+  showToast,
+  user,
+  onLogin
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playingIndex, setPlayingIndex] = useState(-1);
   const [hideChinese, setHideChinese] = useState(false);
   const [blurredCards, setBlurredCards] = useState({});
-  const fileInputRef = useRef(null);
   const isPlayingRef = useRef(false);
+
+  // States for Category Management
+  const [newCatName, setNewCatName] = useState('');
+  const [editingCategoryId, setEditingCategoryId] = useState('');
+  const [editingCategoryName, setEditingCategoryName] = useState('');
+
+  // States for Word Management
+  const [newWordEng, setNewWordEng] = useState('');
+  const [newWordChi, setNewWordChi] = useState('');
+  const [editingVocabId, setEditingVocabId] = useState('');
+  const [editingWordEng, setEditingWordEng] = useState('');
+  const [editingWordChi, setEditingWordChi] = useState('');
 
   // Sync ref with state to prevent closure issues in speech callbacks
   useEffect(() => {
@@ -73,6 +89,44 @@ export default function FilesTab({
     setBlurredCards(newBlurred);
   }, [hideChinese, loadedVocabs]);
 
+  // Category Actions
+  const handleAddCategorySubmit = () => {
+    if (!newCatName.trim()) return;
+    onAddCategory(newCatName.trim());
+    setNewCatName('');
+  };
+
+  const handleStartCategoryEdit = (cat) => {
+    setEditingCategoryId(cat.id);
+    setEditingCategoryName(cat.name);
+  };
+
+  const handleSaveCategoryEdit = (id) => {
+    if (!editingCategoryName.trim()) return;
+    onEditCategory(id, editingCategoryName.trim());
+    setEditingCategoryId('');
+  };
+
+  // Word Actions
+  const handleAddWordSubmit = () => {
+    if (!newWordEng.trim()) return;
+    onAddWord(newWordEng.trim(), newWordChi.trim());
+    setNewWordEng('');
+    setNewWordChi('');
+  };
+
+  const handleStartWordEdit = (vocab) => {
+    setEditingVocabId(vocab.id);
+    setEditingWordEng(vocab.english);
+    setEditingWordChi(vocab.chinese);
+  };
+
+  const handleSaveWordEdit = (id) => {
+    if (!editingWordEng.trim()) return;
+    onEditWord(id, editingWordEng.trim(), editingWordChi.trim());
+    setEditingVocabId('');
+  };
+
   const handleStartPlayer = () => {
     if (loadedVocabs.length === 0) {
       showToast("目前沒有單字可以朗讀！");
@@ -95,112 +149,136 @@ export default function FilesTab({
     }));
   };
 
-  const handleFileChange = (e) => {
-    const uploaded = e.target.files;
-    if (uploaded && uploaded.length > 0) {
-      onUploadLocalFiles(uploaded);
-      e.target.value = ''; // Reset input
-    }
-  };
+  // If user is not logged in, prompt to log in
+  if (!user) {
+    return (
+      <section id="files-tab" className="tab-panel active">
+        <div className="empty-state glass text-center" style={{ maxWidth: '500px', margin: '60px auto', padding: '40px 24px', borderRadius: 'var(--radius-lg)' }}>
+          <i className="fa-solid fa-user-lock empty-icon" style={{ fontSize: '48px', color: 'var(--primary)', marginBottom: '20px' }}></i>
+          <h3 style={{ fontSize: '22px', marginBottom: '12px', fontWeight: 600 }}>請先登入帳號</h3>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.6, fontSize: '15px' }}>
+            EngFlow 智慧單字庫已升級為雲端資料庫儲存。請登入您的 Google 帳號，即可開始建立專屬分類、增刪單字卡，並自動進行雲端同步！
+          </p>
+          <button onClick={onLogin} className="btn btn-primary btn-lg" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 28px', borderRadius: '30px' }}>
+            <i className="fa-brands fa-google"></i>
+            <span>使用 Google 登入</span>
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  const activeCategory = categories.find(c => c.id === activeCategoryId);
 
   return (
     <section id="files-tab" className="tab-panel active">
       <div className="dashboard-grid">
-        {/* Files Selection List */}
+        {/* Left Side: Categories List */}
         <div className="card glass select-file-panel">
           <div className="card-header">
-            <h2><i className="fa-solid fa-file-invoice"></i> 每日學習檔案</h2>
-            <p>點擊載入專案資料夾下的 txt 檔案或本機單字檔</p>
+            <h2><i className="fa-solid fa-tags"></i> 單字分類庫</h2>
+            <p>建立與管理您的單字分類</p>
+          </div>
+
+          {/* Add Category Box */}
+          <div className="add-category-box" style={{ padding: '12px 0', borderBottom: '1px solid var(--border)', display: 'flex', gap: '8px' }}>
+            <input 
+              type="text" 
+              placeholder="新增分類名稱..." 
+              value={newCatName}
+              onChange={(e) => setNewCatName(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleAddCategorySubmit(); }}
+              className="form-control"
+              style={{ padding: '8px 12px', fontSize: '14px' }}
+            />
+            <button onClick={handleAddCategorySubmit} className="btn btn-primary" style={{ padding: '8px 14px' }} title="新增分類">
+              <i className="fa-solid fa-plus"></i>
+            </button>
           </div>
 
           <div className="file-list-container">
             <div id="file-list" className="file-buttons-list">
-              {isLoading ? (
+              {isLoading && categories.length === 0 ? (
                 <div className="file-list-loading">
-                  <i className="fa-solid fa-spinner fa-spin"></i> 正在讀取檔案...
+                  <i className="fa-solid fa-spinner fa-spin"></i> 正在讀取分類...
                 </div>
-              ) : files.length === 0 ? (
-                <div className="file-list-loading error-text">
-                  <i className="fa-solid fa-triangle-exclamation"></i> 無可用單字檔<br />
+              ) : categories.length === 0 ? (
+                <div className="file-list-loading">
+                  <i className="fa-solid fa-triangle-exclamation"></i> 尚未建立任何分類<br />
                   <span style={{ fontSize: '0.85em', opacity: 0.8, marginTop: '5px', display: 'block' }}>
-                    請載入本機單字檔 (.txt)
+                    請在上方輸入名稱新增分類
                   </span>
                 </div>
               ) : (
-                files.map((file) => {
-                  const isLocal = localFiles[file] !== undefined;
-                  const isActive = file === activeFileName;
+                categories.map((cat) => {
+                  const isActive = cat.id === activeCategoryId;
                   return (
-                    <button
-                      key={file}
-                      className={`file-btn ${isActive ? 'active' : ''}`}
-                      onClick={() => {
-                        if (isPlaying) handleStopPlayer();
-                        onLoadFile(file);
-                      }}
+                    <div 
+                      key={cat.id}
+                      className={`category-item-wrapper ${isActive ? 'active' : ''}`}
                     >
-                      {isLocal ? (
-                        <>
-                          <i className="fa-regular fa-file-code" style={{ color: 'var(--accent-light, #818cf8)' }}></i>
-                          {file}
-                          <span style={{ fontSize: '0.75em', opacity: 0.7, marginLeft: 'auto', paddingLeft: '5px' }}>
-                            (本機)
-                          </span>
-                        </>
+                      {editingCategoryId === cat.id ? (
+                        <div style={{ display: 'flex', width: '100%', padding: '4px', gap: '4px', alignItems: 'center' }}>
+                          <input
+                            type="text"
+                            value={editingCategoryName}
+                            onChange={(e) => setEditingCategoryName(e.target.value)}
+                            className="form-control"
+                            style={{ padding: '6px 10px', fontSize: '13px', flexGrow: 1 }}
+                            autoFocus
+                          />
+                          <button onClick={() => handleSaveCategoryEdit(cat.id)} className="btn btn-primary" style={{ padding: '6px 10px' }} title="儲存">
+                            <i className="fa-solid fa-check"></i>
+                          </button>
+                          <button onClick={() => setEditingCategoryId('')} className="btn btn-secondary" style={{ padding: '6px 10px' }} title="取消">
+                            <i className="fa-solid fa-xmark"></i>
+                          </button>
+                        </div>
                       ) : (
                         <>
-                          <i className="fa-regular fa-file-lines"></i>
-                          {file}
+                          <button
+                            className="file-btn"
+                            onClick={() => {
+                              if (isPlaying) handleStopPlayer();
+                              onSelectCategory(cat.id);
+                            }}
+                            style={{ flexGrow: 1, border: 'none', background: 'transparent', width: '100%', padding: '12px 14px' }}
+                          >
+                            <i className="fa-regular fa-folder-open folder-icon"></i>
+                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cat.name}</span>
+                          </button>
+                          <div className="category-actions" style={{ display: 'flex', gap: '2px', paddingRight: '6px' }}>
+                            <button onClick={() => handleStartCategoryEdit(cat)} className="btn-category-action" title="編輯名稱">
+                              <i className="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button onClick={() => onDeleteCategory(cat.id)} className="btn-category-action delete-action" title="刪除分類">
+                              <i className="fa-regular fa-trash-can"></i>
+                            </button>
+                          </div>
                         </>
                       )}
-                    </button>
+                    </div>
                   );
                 })
               )}
             </div>
           </div>
-
-          <div className="file-list-footer" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <button 
-              id="btn-refresh-files" 
-              onClick={onRefreshFiles} 
-              className="btn btn-secondary btn-block btn-sm"
-            >
-              <i className="fa-solid fa-arrows-rotate"></i> 重新整理伺服器檔案
-            </button>
-            <input
-              type="file"
-              id="local-file-input"
-              accept=".txt"
-              multiple
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              style={{ display: 'none' }}
-            />
-            <button
-              id="btn-select-local-file"
-              onClick={() => fileInputRef.current.click()}
-              className="btn btn-primary btn-block btn-sm"
-            >
-              <i className="fa-solid fa-file-import"></i> 載入本機 .txt 單字檔
-            </button>
-          </div>
         </div>
 
-        {/* Active File Words Display */}
+        {/* Right Side: Words List */}
         <div className="card glass words-display-panel">
           <div className="card-header flex-header">
             <div className="words-header-info">
-              <h2 id="active-file-title">{activeFileName || '未選擇檔案'}</h2>
+              <h2 id="active-file-title">{activeCategory ? activeCategory.name : '請選擇單字分類'}</h2>
               <p id="active-file-desc">
-                {activeFileName 
-                  ? isTranslating ? '正在讀取檔案內容並翻譯...' : `成功載入 ${loadedVocabs.length} 個單字。`
-                  : '請從左側點選以載入單字。系統將透過 Google 翻譯自動翻譯。'
+                {activeCategory 
+                  ? isTranslating ? '正在寫入單字並翻譯...' : `此分類下共有 ${loadedVocabs.length} 個單字。`
+                  : '請在左側點選分類以查看單字卡。'
                 }
               </p>
             </div>
 
-            {/* Playlist Player Controls */}
+            {/* Player Controls */}
             {loadedVocabs.length > 0 && !isTranslating && (
               <div id="list-player-controls" className="list-player-controls">
                 {!isPlaying ? (
@@ -234,6 +312,37 @@ export default function FilesTab({
             )}
           </div>
 
+          {/* Add Word Box */}
+          {activeCategoryId && (
+            <div className="add-word-container glass" style={{ padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: 'var(--text)' }}><i className="fa-solid fa-plus-circle"></i> 新增單字卡</h4>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <input
+                  type="text"
+                  placeholder="英文單字/片語 (例如: schedule)..."
+                  value={newWordEng}
+                  onChange={(e) => setNewWordEng(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleAddWordSubmit(); }}
+                  className="form-control"
+                  style={{ flex: 1, minWidth: '150px' }}
+                />
+                <input
+                  type="text"
+                  placeholder="中文翻譯 (留空則自動透過 Google 翻譯)..."
+                  value={newWordChi}
+                  onChange={(e) => setNewWordChi(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleAddWordSubmit(); }}
+                  className="form-control"
+                  style={{ flex: 1, minWidth: '200px' }}
+                />
+                <button onClick={handleAddWordSubmit} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} disabled={isTranslating || !newWordEng.trim()}>
+                  {isTranslating ? <i className="fa-solid fa-spinner fa-spin"></i> : <i className="fa-solid fa-plus"></i>}
+                  <span>新增</span>
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Translate Loading Progress */}
           {isTranslating && (
             <div id="translation-loader" className="translation-loader">
@@ -251,30 +360,87 @@ export default function FilesTab({
                 {loadedVocabs.map((item, index) => {
                   const isWordPlaying = playingIndex === index;
                   const isBlurred = blurredCards[item.id];
+                  const isEditing = editingVocabId === item.id;
+
                   return (
                     <div
                       key={item.id}
                       id={`card-${item.id}`}
                       className={`vocab-card glass ${isWordPlaying ? 'active-playing' : ''}`}
+                      style={{ display: 'flex', flexDirection: 'column', minHeight: '140px' }}
                     >
-                      <div className="vocab-card-header">
-                        <span className="tag-badge">每日英文</span>
-                      </div>
-                      <div className="vocab-english-area">
-                        <h3 className="vocab-card-english">{item.english}</h3>
-                        <button
-                          className="btn-speak-vocab"
-                          onClick={() => speak(item.english)}
-                        >
-                          <i className="fa-solid fa-volume-high"></i>
-                        </button>
-                      </div>
-                      <p
-                        className={`vocab-card-chinese ${isBlurred ? 'blurred' : ''}`}
-                        onClick={() => handleToggleCardBlur(item.id)}
-                      >
-                        {item.chinese}
-                      </p>
+                      {isEditing ? (
+                        <div className="vocab-card-edit-mode" style={{ display: 'flex', flexDirection: 'column', gap: '8px', flexGrow: 1, justifyContent: 'center' }}>
+                          <input 
+                            type="text" 
+                            value={editingWordEng} 
+                            onChange={(e) => setEditingWordEng(e.target.value)} 
+                            className="form-control"
+                            style={{ padding: '6px 10px', fontSize: '14px' }}
+                            placeholder="英文..."
+                          />
+                          <input 
+                            type="text" 
+                            value={editingWordChi} 
+                            onChange={(e) => setEditingWordChi(e.target.value)} 
+                            className="form-control"
+                            style={{ padding: '6px 10px', fontSize: '14px' }}
+                            placeholder="中文翻譯..."
+                          />
+                          <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end', marginTop: '4px' }}>
+                            <button onClick={() => handleSaveWordEdit(item.id)} className="btn btn-success btn-xs" style={{ padding: '4px 10px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <i className="fa-solid fa-check"></i> 儲存
+                            </button>
+                            <button onClick={() => setEditingVocabId('')} className="btn btn-secondary btn-xs" style={{ padding: '4px 10px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <i className="fa-solid fa-xmark"></i> 取消
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="vocab-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span className="tag-badge">雲端字卡</span>
+                          </div>
+                          
+                          <div className="vocab-english-area" style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <h3 className="vocab-card-english" style={{ wordBreak: 'break-word', fontSize: '20px' }}>{item.english}</h3>
+                            <button
+                              className="btn-speak-vocab"
+                              onClick={() => speak(item.english)}
+                              style={{ flexShrink: 0 }}
+                            >
+                              <i className="fa-solid fa-volume-high"></i>
+                            </button>
+                          </div>
+                          
+                          <p
+                            className={`vocab-card-chinese ${isBlurred ? 'blurred' : ''}`}
+                            onClick={() => handleToggleCardBlur(item.id)}
+                            style={{ margin: '8px 0', minHeight: '24px' }}
+                          >
+                            {item.chinese}
+                          </p>
+
+                          <div className="vocab-card-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', borderTop: '1px solid var(--border)', paddingTop: '8px', marginTop: 'auto' }}>
+                            <button 
+                              onClick={() => handleStartWordEdit(item)} 
+                              className="btn-card-action btn-edit" 
+                              title="編輯單字"
+                              style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: '4px' }}
+                            >
+                              <i className="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button 
+                              onClick={() => onDeleteWord(item.id)} 
+                              className="btn-card-action btn-delete" 
+                              title="刪除單字"
+                              style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--danger)', padding: '4px' }}
+                            >
+                              <i className="fa-regular fa-trash-can"></i>
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   );
                 })}
@@ -283,10 +449,12 @@ export default function FilesTab({
               !isTranslating && (
                 <div id="words-empty" className="empty-state glass">
                   <i className="fa-solid fa-file-circle-plus empty-icon"></i>
-                  <h3>尚未載入每日單字</h3>
+                  <h3>分類中尚無單字</h3>
                   <p>
-                    請於左側選擇檔案。您也可以在專案的 `public/data/` 資料夾中新增如 `20260609.txt` 檔案，
-                    每行輸入一個英文單字或句子，並執行 `npm run build` 更新清單。
+                    {activeCategoryId 
+                      ? '請在上方輸入英文與中文，為此分類新增第一個單字字卡！'
+                      : '請先在左側選取或建立單字分類庫。'
+                    }
                   </p>
                 </div>
               )

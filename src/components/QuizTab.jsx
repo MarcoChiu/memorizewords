@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 
 export default function QuizTab({
   loadedVocabs,
-  files,
+  categories,
   speak,
   showToast,
-  onAssembleAllFilesVocabs
+  onAssembleAllCategoriesVocabs
 }) {
   // Quiz Configuration State
   const [quizMode, setQuizMode] = useState('spelling');
-  const [quizScope, setQuizScope] = useState('all-files');
+  const [quizScope, setQuizScope] = useState('all-categories');
   const [quizCount, setQuizCount] = useState('10');
   const [autoPlay, setAutoPlay] = useState(true);
   const [readTwice, setReadTwice] = useState(true);
@@ -111,16 +111,16 @@ export default function QuizTab({
     try {
       if (customPool) {
         pool = customPool;
-      } else if (quizScope === 'all-files') {
-        if (files.length === 0) {
-          showToast("沒有任何檔案可供抽考！");
+      } else if (quizScope === 'all-categories') {
+        if (categories.length === 0) {
+          showToast("沒有任何類別可供抽考！");
           setIsAssembling(false);
           return;
         }
-        pool = await onAssembleAllFilesVocabs();
+        pool = await onAssembleAllCategoriesVocabs();
       } else {
         if (loadedVocabs.length === 0) {
-          showToast("目前沒有載入任何單字，請先至第一頁載入檔案！");
+          showToast("目前選取的分類中無任何單字，請先至第一頁單字分類庫新增單字！");
           setIsAssembling(false);
           return;
         }
@@ -317,8 +317,8 @@ export default function QuizTab({
                   value={quizScope}
                   onChange={(e) => setQuizScope(e.target.value)}
                 >
-                  <option value="all-files">混合隨機抽考之前所有檔案 (預設)</option>
-                  <option value="current-file">僅考目前載入的單字檔案</option>
+                  <option value="all-categories">混合隨機抽考所有單字類別 (預設)</option>
+                  <option value="current-category">僅考目前選取的單字類別</option>
                 </select>
               </div>
 
@@ -366,7 +366,7 @@ export default function QuizTab({
                 id="btn-start-quiz" 
                 onClick={() => handleStartQuiz()}
                 className="btn btn-primary btn-block btn-lg"
-                disabled={isAssembling || (quizScope === 'current-file' && loadedVocabs.length === 0)}
+                disabled={isAssembling || (quizScope === 'current-category' && loadedVocabs.length === 0)}
               >
                 {isAssembling ? (
                   <><i className="fa-solid fa-spinner fa-spin"></i> 正在彙整單字...</>
@@ -375,9 +375,9 @@ export default function QuizTab({
                 )}
               </button>
               
-              {quizScope === 'current-file' && loadedVocabs.length === 0 && (
+              {quizScope === 'current-category' && loadedVocabs.length === 0 && (
                 <div id="start-quiz-hint" className="start-quiz-hint">
-                  請先在第一頁載入檔案，或切換範圍為「混合隨機抽考」
+                  目前選取的分類中無任何單字，請先至第一頁單字分類庫新增單字，或切換範圍為「混合隨機抽考」！
                 </div>
               )}
             </div>

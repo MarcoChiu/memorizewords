@@ -167,3 +167,32 @@
 .text-center {
     text-align: center;
 }
+
+/* Form Control Input fields */
+.form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm, 6px);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: all var(--transition-fast, 0.2s);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+body.light-mode .form-control {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.light-mode .form-control:focus {
+    background: rgba(0, 0, 0, 0.04);
+}
