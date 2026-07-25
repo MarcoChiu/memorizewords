@@ -11,7 +11,7 @@ export default function Header({
   return (
     <header className="app-header">
       <div className="header-logo">
-        <i className="fa-solid fa-graduation-cap logo-icon"></i>
+        <img src="./logo.png" alt="Logo" className="logo-icon" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
         <h1>簡單考 <span className="logo-subtitle">自動翻譯 & 每日抽考</span></h1>
       </div>
       <div className="header-controls">
