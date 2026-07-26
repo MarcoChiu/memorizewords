@@ -29,10 +29,10 @@ export default function Header({
               </button>
             </div>
           ) : (
-            <button onClick={onLogin} className="btn-login">
+            <button onClick={onLogin} className="btn-login" title="Google 登入">
               <i className="fa-brands fa-google"></i>
-              <span>Google 登入</span>
-              {!isFirebaseReady && <span style={{ fontSize: '11px', opacity: 0.6, marginLeft: '4px' }}>(未設定)</span>}
+              <span className="btn-login-text">Google 登入</span>
+              {!isFirebaseReady && <span className="btn-login-text" style={{ fontSize: '11px', opacity: 0.6, marginLeft: '4px' }}>(未設定)</span>}
             </button>
           )}
         </div>

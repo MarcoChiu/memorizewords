@@ -14,17 +14,42 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        gap: 8px;
+    }
+
+    .header-logo {
+        gap: 8px;
+    }
+
+    .header-logo h1 {
+        font-size: 20px;
+    }
+
+    .header-controls {
+        gap: 8px;
+    }
+
+    .user-profile-card {
+        padding: 4px 8px 4px 4px;
+        gap: 6px;
+    }
+
+    .user-avatar {
+        width: 28px;
+        height: 28px;
     }
 
     .app-nav {
         gap: 6px;
         margin-bottom: 20px;
+        overflow-x: auto;
     }
 
     .nav-tab {
-        padding: 10px 14px;
-        font-size: 16px;
+        padding: 8px 14px;
+        font-size: 15px;
         border-radius: var(--radius-sm);
+        white-space: nowrap;
     }
 
     .card {
@@ -61,14 +86,30 @@
     }
 
     .file-btn {
-        padding: 10px 14px;
-        font-size: 15px;
+        padding: 8px 12px;
+        font-size: 14px;
         white-space: nowrap;
         transform: none !important;
     }
 
     .file-btn:hover {
         transform: none !important;
+    }
+
+    /* Add Word Container on Mobile */
+    .add-word-container > div {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .add-word-container input {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .add-word-container button {
+        width: 100% !important;
+        justify-content: center;
     }
 
     /* Words List */
@@ -186,6 +227,8 @@
         justify-content: flex-start;
         border-top: 1px dashed var(--border);
         padding-top: 12px;
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
     /* Toast Notification */
@@ -193,6 +236,37 @@
         width: calc(100% - 40px);
         max-width: none;
         justify-content: center;
+    }
+
+    /* Settings Tab */
+    .test-input-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .test-input-group button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .settings-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .settings-actions button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .logo-subtitle {
+        display: none; /* Hide subtitle on mobile screens for compact layout */
+    }
+
+    .user-name {
+        display: none; /* Hide user name on small screens, keep avatar & logout icon */
     }
 }
 
@@ -205,11 +279,26 @@
         font-size: 18px;
     }
 
-    .logo-subtitle {
-        font-size: 10px;
+    .app-nav {
+        margin-bottom: 14px;
+        gap: 4px;
     }
 
-    .app-nav {
-        margin-bottom: 12px;
+    .nav-tab {
+        padding: 8px 10px;
+        font-size: 13px;
+        gap: 4px;
     }
 }
+
+@media (max-width: 380px) {
+    .btn-login-text {
+        display: none; /* Hide login button label on ultra small screens */
+    }
+
+    .btn-login {
+        padding: 8px;
+        border-radius: 50%;
+    }
+}
+
