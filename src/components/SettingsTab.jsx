@@ -11,6 +11,7 @@ export default function SettingsTab({
   const [rate, setRate] = useState(settings.rate || 0.75);
   const [pitch, setPitch] = useState(settings.pitch || 1.0);
   const [speechMode, setSpeechMode] = useState(settings.speechMode || 'twice');
+  const [spellAfter, setSpellAfter] = useState(settings.spellAfter || false);
   const [testText, setTestText] = useState('Continuous learning builds intelligence. Welcome to 簡單考.');
 
   // Sync state with settings changes (e.g. on reset or load)
@@ -19,11 +20,12 @@ export default function SettingsTab({
     setRate(settings.rate);
     setPitch(settings.pitch);
     setSpeechMode(settings.speechMode);
+    setSpellAfter(settings.spellAfter);
   }, [settings]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSaveSettings({ voiceURI, rate, pitch, speechMode });
+    onSaveSettings({ voiceURI, rate, pitch, speechMode, spellAfter });
   };
 
   const handleReset = () => {
@@ -76,6 +78,20 @@ export default function SettingsTab({
               <option value="twice">朗讀兩次 (正常速 + 慢速 0.5x)</option>
               <option value="once">只朗讀一次 (依設定語速)</option>
             </select>
+          </div>
+
+          {/* Spell After Mode */}
+          <div className="form-group checkbox-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+            <input
+              type="checkbox"
+              id="settings-spell-after"
+              checked={spellAfter}
+              onChange={(e) => setSpellAfter(e.target.checked)}
+              style={{ width: 'auto', marginBottom: 0 }}
+            />
+            <label htmlFor="settings-spell-after" style={{ marginBottom: 0, cursor: 'pointer' }}>
+              <i className="fa-solid fa-spell-check"></i> 朗讀完畢後自動拼寫單字
+            </label>
           </div>
 
           {/* Rate slider */}

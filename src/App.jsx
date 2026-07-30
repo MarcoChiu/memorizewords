@@ -29,7 +29,8 @@ const DEFAULTS = {
   rate: 0.75,
   pitch: 1.0,
   theme: 'dark',
-  speechMode: 'twice'
+  speechMode: 'twice',
+  spellAfter: false
 };
 
 export default function App() {
@@ -48,7 +49,8 @@ export default function App() {
     voiceURI: '',
     rate: DEFAULTS.rate,
     pitch: DEFAULTS.pitch,
-    speechMode: DEFAULTS.speechMode
+    speechMode: DEFAULTS.speechMode,
+    spellAfter: DEFAULTS.spellAfter
   });
   const [availableVoices, setAvailableVoices] = useState([]);
 
@@ -69,7 +71,8 @@ export default function App() {
       voiceURI: '',
       rate: DEFAULTS.rate,
       pitch: DEFAULTS.pitch,
-      speechMode: DEFAULTS.speechMode
+      speechMode: DEFAULTS.speechMode,
+      spellAfter: DEFAULTS.spellAfter
     };
     if (localSettings) {
       try {
@@ -470,6 +473,7 @@ export default function App() {
     const pitchParam = customParams ? customParams.pitch : settings.pitch;
     const voiceURIParam = customParams ? customParams.voiceURI : settings.voiceURI;
     const speechModeParam = customParams ? customParams.speechMode : settings.speechMode;
+    const spellAfterParam = customParams ? customParams.spellAfter : settings.spellAfter;
 
     const createUtterance = (speechText, speed, onSpeechEnd, onSpeechError) => {
       const utterance = new SpeechSynthesisUtterance(speechText);
@@ -498,8 +502,30 @@ export default function App() {
         text,
         rateParam,
         () => {
+          const doSpell = () => {
+            if (!spellAfterParam) {
+              if (callback) callback();
+              return;
+            }
+            setTimeout(() => {
+              if (currentSpeechSequenceId.current !== seqId) return;
+              const spellText = text.replace(/[^a-zA-Z]/g, '').split('').join(' ');
+              if (!spellText) {
+                 if (callback) callback();
+                 return;
+              }
+              const spellUtterance = createUtterance(
+                spellText,
+                rateParam * 0.9,
+                () => { if (callback) callback(); },
+                (e) => { console.error("Spell error:", e); if (callback) callback(); }
+              );
+              synth.speak(spellUtterance);
+            }, 600);
+          };
+
           if (speechModeParam === 'once') {
-            if (callback) callback();
+            doSpell();
             return;
           }
 
@@ -511,11 +537,11 @@ export default function App() {
               text,
               slowRate,
               () => {
-                if (callback) callback();
+                doSpell();
               },
               (e) => {
                 console.error("Slow speech error:", e);
-                if (callback) callback();
+                doSpell();
               }
             );
             synth.speak(utterance2);
@@ -608,7 +634,8 @@ export default function App() {
       voiceURI: defaultVoice,
       rate: DEFAULTS.rate,
       pitch: DEFAULTS.pitch,
-      speechMode: DEFAULTS.speechMode
+      speechMode: DEFAULTS.speechMode,
+      spellAfter: DEFAULTS.spellAfter
     };
     setSettings(reset);
     localStorage.setItem("簡單考_settings_v2", JSON.stringify(reset));
