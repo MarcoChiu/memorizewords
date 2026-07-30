@@ -310,7 +310,7 @@ export default function FilesTab({
                   <span className="slider"></span>
                   <span className="toggle-label">遮蔽中文 (點選顯現)</span>
                 </label>
-                <label className="toggle-switch" style={{ marginLeft: '10px' }}>
+                <label className="toggle-switch">
                   <input
                     type="checkbox"
                     id="player-spell-after"
