@@ -17,7 +17,9 @@ export default function FilesTab({
   speak,
   showToast,
   user,
-  onLogin
+  onLogin,
+  spellAfter,
+  onToggleSpellAfter
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playingIndex, setPlayingIndex] = useState(-1);
@@ -307,6 +309,16 @@ export default function FilesTab({
                   />
                   <span className="slider"></span>
                   <span className="toggle-label">遮蔽中文 (點選顯現)</span>
+                </label>
+                <label className="toggle-switch" style={{ marginLeft: '10px' }}>
+                  <input
+                    type="checkbox"
+                    id="player-spell-after"
+                    checked={spellAfter}
+                    onChange={(e) => onToggleSpellAfter(e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                  <span className="toggle-label">朗讀後拼字</span>
                 </label>
               </div>
             )}

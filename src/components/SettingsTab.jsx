@@ -80,19 +80,6 @@ export default function SettingsTab({
             </select>
           </div>
 
-          {/* Spell After Mode */}
-          <div className="form-group checkbox-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
-            <input
-              type="checkbox"
-              id="settings-spell-after"
-              checked={spellAfter}
-              onChange={(e) => setSpellAfter(e.target.checked)}
-              style={{ width: 'auto', marginBottom: 0 }}
-            />
-            <label htmlFor="settings-spell-after" style={{ marginBottom: 0, cursor: 'pointer' }}>
-              <i className="fa-solid fa-spell-check"></i> 朗讀完畢後自動拼寫單字
-            </label>
-          </div>
 
           {/* Rate slider */}
           <div className="form-group">

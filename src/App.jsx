@@ -516,7 +516,7 @@ export default function App() {
               }
               const spellUtterance = createUtterance(
                 spellText,
-                rateParam * 0.9,
+                Math.min(rateParam * 0.5, 0.6),
                 () => { if (callback) callback(); },
                 (e) => { console.error("Spell error:", e); if (callback) callback(); }
               );
@@ -693,6 +693,8 @@ export default function App() {
             showToast={showToast}
             user={user}
             onLogin={handleLogin}
+            spellAfter={settings.spellAfter}
+            onToggleSpellAfter={(val) => handleSaveSettings({ ...settings, spellAfter: val })}
           />
         )}
 

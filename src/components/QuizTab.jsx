@@ -48,7 +48,7 @@ export default function QuizTab({
 
       if (autoPlay) {
         const timer = setTimeout(() => {
-          speak(currentQuestion.english);
+          speak(currentQuestion.english, null, false, { spellAfter: false });
         }, 300);
         return () => clearTimeout(timer);
       }
@@ -426,7 +426,7 @@ export default function QuizTab({
                 <div className="audio-prompt-section">
                   <button
                     id="btn-quiz-speak"
-                    onClick={() => speak(currentQuestion.english)}
+                    onClick={() => speak(currentQuestion.english, null, false, { spellAfter: false })}
                     className="btn-voice-large"
                     title="朗讀發音"
                   >
@@ -480,7 +480,7 @@ export default function QuizTab({
                 <div className="choice-question-header">
                   <button
                     id="btn-choice-speak"
-                    onClick={() => speak(currentQuestion.english)}
+                    onClick={() => speak(currentQuestion.english, null, false, { spellAfter: false })}
                     className="btn-voice-medium"
                     title="朗讀發音"
                   >
@@ -551,7 +551,7 @@ export default function QuizTab({
                         id="btn-flashcard-speak"
                         onClick={(e) => {
                           e.stopPropagation();
-                          speak(currentQuestion.english);
+                          speak(currentQuestion.english, null, false, { spellAfter: false });
                         }}
                         className="btn-speak-card"
                         title="朗讀發音"
