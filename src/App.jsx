@@ -469,11 +469,11 @@ export default function App() {
 
     const seqId = ++currentSpeechSequenceId.current;
 
-    const rateParam = customParams ? customParams.rate : settings.rate;
-    const pitchParam = customParams ? customParams.pitch : settings.pitch;
-    const voiceURIParam = customParams ? customParams.voiceURI : settings.voiceURI;
-    const speechModeParam = customParams ? customParams.speechMode : settings.speechMode;
-    const spellAfterParam = customParams ? customParams.spellAfter : settings.spellAfter;
+    const rateParam = customParams?.rate ?? settings.rate;
+    const pitchParam = customParams?.pitch ?? settings.pitch;
+    const voiceURIParam = customParams?.voiceURI ?? settings.voiceURI;
+    const speechModeParam = customParams?.speechMode ?? settings.speechMode;
+    const spellAfterParam = customParams?.spellAfter ?? settings.spellAfter;
 
     const createUtterance = (speechText, speed, onSpeechEnd, onSpeechError) => {
       const utterance = new SpeechSynthesisUtterance(speechText);
