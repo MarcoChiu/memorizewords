@@ -164,7 +164,7 @@ export default function App() {
 
   // Load Title and Init TTS Voices on mount
   useEffect(() => {
-    document.title = `每日英文學習 & 智慧抽考系統 (${typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : 'Dev'} build)`;
+    document.title = `每日英文學習 & 智慧抽考系統`;
 
     // Init TTS Voices
     const synth = window.speechSynthesis;
@@ -517,7 +517,11 @@ export default function App() {
               const spellUtterance = createUtterance(
                 spellText,
                 Math.min(rateParam * 0.5, 0.6),
-                () => { if (callback) callback(); },
+                () => {
+                  setTimeout(() => {
+                    if (currentSpeechSequenceId.current === seqId && callback) callback();
+                  }, 1500); // 增加 1.5 秒延遲，讓使用者有時間跟讀
+                },
                 (e) => { console.error("Spell error:", e); if (callback) callback(); }
               );
               synth.speak(spellUtterance);
@@ -721,6 +725,7 @@ export default function App() {
 
       <footer className="app-footer">
         <p>&copy; 2026 簡單考. React 元件化版本，支援單字翻譯、語音跟讀與智慧拼字測驗。</p>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '8px' }}>Build Time: {typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : 'Dev'} build</p>
       </footer>
 
       {/* Notification Toast */}
